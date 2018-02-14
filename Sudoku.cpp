@@ -1,9 +1,5 @@
 //
 //  Sudoku.cpp
-//  PD Tests
-//
-//  Created by H263353 on 12/4/17.
-//  Copyright © 2017 Me. All rights reserved.
 //
 
 #include "Sudoku.hpp"
