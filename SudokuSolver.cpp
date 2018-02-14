@@ -1,9 +1,5 @@
 //
 //  SudokuSolver.cpp
-//  PD Tests
-//
-//  Created by H263353 on 12/5/17.
-//  Copyright © 2017 Me. All rights reserved.
 //
 
 #include "SudokuSolver.hpp"
