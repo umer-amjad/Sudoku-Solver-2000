@@ -1,6 +1,6 @@
 //
 //  Sudoku.hpp
-//  PD Tests
+// 
 
 #ifndef Sudoku_hpp
 #define Sudoku_hpp
