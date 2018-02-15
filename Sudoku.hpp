@@ -32,11 +32,9 @@ struct PossVectCompare {
 //            std::cout << "Pos1: " << a.first << " Size: " << a.second.size() << '\n';
 //            std::cout << "Pos2: " << b.first << " Size: " << b.second.size() << '\n';
 //        }
-        if (a.second.size() < b.second.size())
-            return true;
-        else if (a.second.size() > b.second.size())
-            return false;
-        return a.first < b.first;
+        if (a.second.size() == b.second.size())
+            return a.first < b.first;
+        return a.second.size() < b.second.size();
     }
 };
 class Sudoku {
