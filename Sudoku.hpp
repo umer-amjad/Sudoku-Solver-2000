@@ -38,8 +38,6 @@ private:
     static constexpr int MAGNITUDE_SQR = MAGNITUDE * MAGNITUDE;
     std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entry;
     std::vector<PossVect> allPossVect; //set of possibility vectors
-    //std::set<PossVect, PossVectCompare> allPossVect2;
-    //int totalNumPoss = 0;
     inline int rowNum(int pos);
     inline int colNum(int pos);
     inline int boxNum(int pos);
