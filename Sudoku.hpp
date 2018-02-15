@@ -28,10 +28,6 @@ typedef std::pair<int, std::vector<int>> PossVect;
 
 struct PossVectCompare {
     inline bool operator()(const PossVect &a, const PossVect &b) {
-//        if (a.first == 57){
-//            std::cout << "Pos1: " << a.first << " Size: " << a.second.size() << '\n';
-//            std::cout << "Pos2: " << b.first << " Size: " << b.second.size() << '\n';
-//        }
         if (a.second.size() == b.second.size())
             return a.first < b.first;
         return a.second.size() < b.second.size();
