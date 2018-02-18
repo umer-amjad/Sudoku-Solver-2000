@@ -37,9 +37,9 @@ class Sudoku {
 private:
     std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entry;
     std::vector<PossVect> allPossVect; //set of possibility vectors
-    inline int rowNum(int pos);
-    inline int colNum(int pos);
-    inline int boxNum(int pos);
+    static inline int rowNum(int pos);
+    static inline int colNum(int pos);
+    static inline int boxNum(int pos);
     std::vector<int> findPossibles(int i);
     
     Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossVect> newPossVect); //creating Sudokus when possVect has already been created (neighbours calculation)
@@ -55,6 +55,7 @@ public:
     std::string showEmptyPos();
     bool isComplete();
     bool isDivergent();
+    bool invalidPuzzle(); // invalid if no numbers possible at some position
     Sudoku fillPossibles();
     std::vector<Sudoku> neighbours();
     

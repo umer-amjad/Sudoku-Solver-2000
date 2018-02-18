@@ -193,9 +193,9 @@ Sudoku Sudoku::fillPossibles(){
     //keep track of which numbers have been used ("visited"), in case the puzzle has reached a point
     //where the only possibles in the same row/box/col are overlapping (contradictorily). 
     bool visited[MAGNITUDE_SQR + 1] = {false}; //starts at 0, but uses values from 1
-    auto possVec = allPossVect.begin();
-    for (; possVec != allPossVect.end(); possVec++){
-        if (possVec->second.size() == 0 || possVec->second.size() > 1)
+    auto possVec = allPossVect.rbegin();
+    for (; possVec != allPossVect.rend(); ++possVec){
+        if (possVec->second.size() != 1)
             break;
         int val = possVec->second[0];
         if (visited[val])
@@ -203,7 +203,7 @@ Sudoku Sudoku::fillPossibles(){
         entry[possVec->first] = val; //size = 1
         visited[val] = true;
     }
-    allPossVect.erase(allPossVect.begin(), possVec);
+    allPossVect.erase(possVec.base(), allPossVect.end());
     //std::cout << "After filling pos:\n" << showEmptyPos();
     return Sudoku(this->entry);
 }
@@ -213,13 +213,14 @@ bool Sudoku::isComplete(){
 }
 
 bool Sudoku::isDivergent(){
-    if (allPossVect.size() > 0){
-        if (allPossVect[0].second.size() == 0){
-            return true;
-        }
-        return allPossVect[0].second.size() > 1;
+    if (allPossVect.back().second.size() == 0){
+        return true;
     }
-    return false;
+    return allPossVect.back().second.size() > 1;
+}
+
+bool Sudoku::invalidPuzzle(){
+    return allPossVect.back().second.size() == 0;
 }
 
 
