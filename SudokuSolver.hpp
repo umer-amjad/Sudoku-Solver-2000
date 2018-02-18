@@ -9,7 +9,6 @@
 
 #include "Sudoku.hpp"
 
-
 namespace Solver{
     std::pair<Sudoku, bool> solve(Sudoku& sud);
     std::pair<Sudoku, bool> solveVector(std::vector<Sudoku>& nbrs);

@@ -33,6 +33,7 @@ struct PossVectCompare {
         return a.second.size() > b.second.size();
     }
 };
+
 class Sudoku {
 private:
     std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entry;
