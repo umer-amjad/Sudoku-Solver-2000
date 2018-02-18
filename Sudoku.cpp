@@ -27,8 +27,8 @@ int Sudoku::boxNum(int pos){
 bool operator<(Sudoku const& sud1, Sudoku const& sud2){
     if (sud1.allPossVect.size() == 0 || sud2.allPossVect.size() == 0) // no possibilities in lowest
         return sud1.allPossVect.size() < sud2.allPossVect.size();
-    int size1 = (int) sud1.allPossVect.begin()->second.size();
-    int size2 = (int) sud2.allPossVect.begin()->second.size();
+    int size1 = (int) sud1.allPossVect.back().second.size();
+    int size2 = (int) sud2.allPossVect.back().second.size();
     //        if (size1 == size2)
     //            return sud1.totalNumPoss < sud2.totalNumPoss;
     return size1 < size2;
@@ -41,7 +41,7 @@ std::vector<int> Sudoku::findPossibles(int pos){
     auto bx = this->box(boxNum(pos));
     std::vector<int> possibles = allPoss;
     possibles.erase(std::remove_if(possibles.begin(), possibles.end(),
-                   [rw, cl, bx](int possible){
+                   [&rw, &cl, &bx](int possible){
                        if (std::find(rw.begin(), rw.end(), possible) != rw.end())
                            return true;
                        if (std::find(cl.begin(), cl.end(), possible) != cl.end())
@@ -58,9 +58,8 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entryList): entry(en
     int i = 0;
     for (auto e : entry){
         if (e == 0){
-            std::vector<int> poss = findPossibles(i);
             //std::cout << "Here at pos " << i << '\n';
-            allPossVect.emplace_back(std::make_pair(i, poss));
+            allPossVect.emplace_back(std::make_pair(i, findPossibles(i)));
         }
         i++;
     }
@@ -77,7 +76,7 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::v
         auto cl = this->col(colNum(index));
         auto bx = this->box(boxNum(index));
         possibles.erase(std::remove_if(possibles.begin(), possibles.end(),
-                                       [rw, cl, bx](int possible){
+                                       [&rw, &cl, &bx](int possible){
                                            if (std::find(rw.begin(), rw.end(), possible) != rw.end())
                                                return true;
                                            if (std::find(cl.begin(), cl.end(), possible) != cl.end())
@@ -126,8 +125,8 @@ PossVect Sudoku::popFirstPosVect(){
 }
 
 std::vector<Sudoku> Sudoku::neighbours(){
-    auto smallestPossList = popFirstPosVect(); // take out first element
-    //std::cout<<showEmptyPos(); debug
+    auto smallestPossList = allPossVect.back(); // take out first element
+    allPossVect.pop_back();
     int numNbrs = (int) smallestPossList.second.size();
     std::vector<Sudoku> nbrs;
     for (int i = 0; i < numNbrs; i++){

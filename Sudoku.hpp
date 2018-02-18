@@ -29,13 +29,12 @@ typedef std::pair<int, std::vector<int>> PossVect;
 struct PossVectCompare {
     inline bool operator()(const PossVect &a, const PossVect &b) {
         if (a.second.size() == b.second.size())
-            return a.first < b.first;
-        return a.second.size() < b.second.size();
+            return a.first > b.first;
+        return a.second.size() > b.second.size();
     }
 };
 class Sudoku {
 private:
-    static constexpr int MAGNITUDE_SQR = MAGNITUDE * MAGNITUDE;
     std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entry;
     std::vector<PossVect> allPossVect; //set of possibility vectors
     inline int rowNum(int pos);
