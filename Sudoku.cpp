@@ -56,14 +56,20 @@ std::vector<int> Sudoku::findPossibles(int pos){
 
 Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entryList): entry(entryList){
     int i = 0;
+    int min_possibles_size = MAGNITUDE_SQR;
+    auto min_iterator = allPossVect.begin();
     for (auto e : entry){
         if (e == 0){
             //std::cout << "Here at pos " << i << '\n';
             allPossVect.emplace_back(std::make_pair(i, findPossibles(i)));
+            if (allPossVect.back().second.size() < min_possibles_size){
+                min_iterator = std::prev(allPossVect.end());
+                min_possibles_size = allPossVect.back().second.size();
+            }
         }
         i++;
     }
-    std::sort(allPossVect.begin(), allPossVect.end(), PossVectCompare());
+    std::sort(min_iterator, allPossVect.end(), PossVectCompare());
 //    std::cout << *this;
 //    std::cout << showEmptyPos();
 };
@@ -93,11 +99,11 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::v
             min_possibles_size = possibles.size();
         }
     }
-      std::sort(min_iterator, allPossVect.end(), PossVectCompare());
+    std::sort(min_iterator, allPossVect.end(), PossVectCompare());
 };
 
 std::array<int, MAGNITUDE_SQR> Sudoku::row(int n){
-    std::array<int, MAGNITUDE_SQR> result{0};
+    std::array<int, MAGNITUDE_SQR> result;
     for (int i = 0; i < MAGNITUDE_SQR; i++){
         result[i] = entry[i+n*MAGNITUDE_SQR];
     }
@@ -105,7 +111,7 @@ std::array<int, MAGNITUDE_SQR> Sudoku::row(int n){
 }
 
 std::array<int, MAGNITUDE_SQR> Sudoku::col(int n){
-    std::array<int, MAGNITUDE_SQR> result{0};
+    std::array<int, MAGNITUDE_SQR> result;
     for (int i = 0; i < MAGNITUDE_SQR; i++){
         result[i] = entry[n+i*MAGNITUDE_SQR];
     }
@@ -113,7 +119,7 @@ std::array<int, MAGNITUDE_SQR> Sudoku::col(int n){
 }
 
 std::array<int, MAGNITUDE_SQR> Sudoku::box(int n){
-    std::array<int, MAGNITUDE_SQR> result{0};
+    std::array<int, MAGNITUDE_SQR> result;
     int colStart = MAGNITUDE*(n % MAGNITUDE);
     int rowStart = MAGNITUDE*(n / MAGNITUDE);
     int boxStart = MAGNITUDE_SQR*rowStart + colStart;
@@ -121,12 +127,6 @@ std::array<int, MAGNITUDE_SQR> Sudoku::box(int n){
         result[i] = entry[boxStart + (i % MAGNITUDE) + (i / MAGNITUDE) * MAGNITUDE_SQR];
     }
     return result;
-}
-
-PossVect Sudoku::popFirstPosVect(){
-    auto smallestPossList = std::move(allPossVect[0]);
-    allPossVect.erase(allPossVect.begin());//erase first (begin) element
-    return smallestPossList;
 }
 
 std::deque<Sudoku> Sudoku::neighbours(){

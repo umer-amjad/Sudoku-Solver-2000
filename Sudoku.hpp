@@ -47,8 +47,7 @@ private:
     Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossVect> newPossVect); //creating Sudokus when possVect has already been created (neighbours calculation)
     std::array<int, MAGNITUDE_SQR> row(int n);
     std::array<int, MAGNITUDE_SQR> col(int n);
-    virtual std::array<int, MAGNITUDE_SQR> box(int n);
-    PossVect popFirstPosVect();
+    std::array<int, MAGNITUDE_SQR> box(int n);
     
     Sudoku createNeighbour(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entries, int index, int value, int possValue);
 public:
