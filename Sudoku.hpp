@@ -10,6 +10,7 @@
 #include <cmath>
 #include <array>
 #include <vector>
+#include <deque>
 #include <ostream>
 #include <string>
 #include <sstream>
@@ -58,7 +59,7 @@ public:
     bool isDivergent();
     bool invalidPuzzle(); // invalid if no numbers possible at some position
     Sudoku fillPossibles();
-    std::vector<Sudoku> neighbours();
+    std::deque<Sudoku> neighbours();
     
     inline int& operator[](std::size_t index) {
         return entry[index];

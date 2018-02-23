@@ -11,7 +11,7 @@
 
 namespace Solver{
     std::pair<Sudoku, bool> solve(Sudoku& sud);
-    std::pair<Sudoku, bool> solveVector(std::vector<Sudoku>& nbrs);
+    std::pair<Sudoku, bool> solveVector(std::deque<Sudoku>& nbrs);
 };
 
 #endif /* SudokuSolver_hpp */

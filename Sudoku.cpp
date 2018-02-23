@@ -30,7 +30,7 @@ bool operator<(Sudoku const& sud1, Sudoku const& sud2){
     int size1 = (int) sud1.allPossVect.back().second.size();
     int size2 = (int) sud2.allPossVect.back().second.size();
     //        if (size1 == size2)
-    //            return sud1.totalNumPoss < sud2.totalNumPoss;
+    //            return sud1.allPossVect.size() > sud2.allPossVect.size();
     return size1 < size2;
 }
 
@@ -68,10 +68,12 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entryList): entry(en
 //    std::cout << showEmptyPos();
 };
 
-Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossVect> newPossVect): entry(newEntryList), allPossVect(newPossVect) {    
-    for (auto& indPoss : allPossVect){
-        int index = indPoss.first;
-        std::vector<int>& possibles = indPoss.second;
+Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossVect> newPossVect): entry(newEntryList), allPossVect(newPossVect) {
+    int min_possibles_size = MAGNITUDE_SQR;
+    auto min_iterator = allPossVect.begin();
+    for (auto indPoss = allPossVect.begin(); indPoss != allPossVect.end(); indPoss++){
+        int index = indPoss->first;
+        std::vector<int>& possibles = indPoss->second;
         auto rw = this->row(rowNum(index));
         auto cl = this->col(colNum(index));
         auto bx = this->box(boxNum(index));
@@ -86,8 +88,14 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::v
                                            
                                            return false; //Not found in any of them, not removed
                                        }), possibles.end());
+//        if (possibles.size() < min_possibles_size){
+//            min_iterator = indPoss;
+//        }
     }
-    std::sort(allPossVect.begin(), allPossVect.end(), PossVectCompare());
+//    if (allPossVect.size() < 15)
+      std::sort(allPossVect.begin(), allPossVect.end(), PossVectCompare());
+//    else
+//        std::sort(allPossVect.end() - 15, allPossVect.end(), PossVectCompare());
 //    std::cout << *this;
 };
 
@@ -124,11 +132,11 @@ PossVect Sudoku::popFirstPosVect(){
     return smallestPossList;
 }
 
-std::vector<Sudoku> Sudoku::neighbours(){
+std::deque<Sudoku> Sudoku::neighbours(){
     auto smallestPossList = allPossVect.back(); // take out first element
     allPossVect.pop_back();
     int numNbrs = (int) smallestPossList.second.size();
-    std::vector<Sudoku> nbrs;
+    std::deque<Sudoku> nbrs;
     for (int i = 0; i < numNbrs; i++){
         std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntry = entry;
         newEntry[smallestPossList.first] = smallestPossList.second[i];
@@ -205,7 +213,7 @@ Sudoku Sudoku::fillPossibles(){
     }
     allPossVect.erase(possVec.base(), allPossVect.end());
     //std::cout << "After filling pos:\n" << showEmptyPos();
-    return Sudoku(this->entry);
+    return Sudoku(this->entry, allPossVect);
 }
 
 bool Sudoku::isComplete(){

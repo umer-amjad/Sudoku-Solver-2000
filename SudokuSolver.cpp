@@ -24,14 +24,18 @@ std::pair<Sudoku, bool> Solver::solve(Sudoku& sud){
     return solveVector(nbrs);
 }
 
-std::pair<Sudoku, bool> Solver::solveVector(std::vector<Sudoku>& nbrs){
+std::pair<Sudoku, bool> Solver::solveVector(std::deque<Sudoku>& nbrs){
     //std::cout << "SolveVector called" << std::endl; //debug
     if (nbrs.size() == 0){
         return {Sudoku(), false};
     }
+    //auto firstResult = solve(nbrs.back());
     auto firstResult = solve(nbrs[0]);
     if (!firstResult.second) {
-        nbrs.erase(nbrs.begin()); //remove first element
+        //std::swap(nbrs[0], nbrs.back());
+        //nbrs.pop_back();
+        //nbrs.erase(nbrs.begin()); //remove first element
+        nbrs.pop_front();
         return solveVector(nbrs);
     }
     return firstResult;
