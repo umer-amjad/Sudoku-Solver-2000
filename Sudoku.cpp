@@ -88,15 +88,12 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::v
                                            
                                            return false; //Not found in any of them, not removed
                                        }), possibles.end());
-//        if (possibles.size() < min_possibles_size){
-//            min_iterator = indPoss;
-//        }
+        if (possibles.size() < min_possibles_size){
+            min_iterator = indPoss;
+            min_possibles_size = possibles.size();
+        }
     }
-//    if (allPossVect.size() < 15)
-      std::sort(allPossVect.begin(), allPossVect.end(), PossVectCompare());
-//    else
-//        std::sort(allPossVect.end() - 15, allPossVect.end(), PossVectCompare());
-//    std::cout << *this;
+      std::sort(min_iterator, allPossVect.end(), PossVectCompare());
 };
 
 std::array<int, MAGNITUDE_SQR> Sudoku::row(int n){
