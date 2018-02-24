@@ -36,21 +36,17 @@ bool operator<(Sudoku const& sud1, Sudoku const& sud2){
 
 
 std::vector<int> Sudoku::findPossibles(int pos){
-    auto rw = this->row(rowNum(pos));
-    auto cl = this->col(colNum(pos));
-    auto bx = this->box(boxNum(pos));
     std::vector<int> possibles = allPoss;
+    auto rw_filled = this->row_filled(rowNum(pos));
+    auto cl_filled = this->col_filled(colNum(pos));
+    auto bx_filled = this->box_filled(boxNum(pos));
     possibles.erase(std::remove_if(possibles.begin(), possibles.end(),
-                   [&rw, &cl, &bx](int possible){
-                       if (std::find(rw.begin(), rw.end(), possible) != rw.end())
-                           return true;
-                       if (std::find(cl.begin(), cl.end(), possible) != cl.end())
-                           return true;
-                       if (std::find(bx.begin(), bx.end(), possible) != bx.end())
-                           return true;
-                       
-                       return false; //Not found in any of them, not removed
-                   }), possibles.end());
+                                   [&rw_filled, &cl_filled, &bx_filled](int possible){
+                                       if (rw_filled[possible] || cl_filled[possible] || bx_filled[possible])
+                                           return true;
+                                       
+                                       return false; //Not found in any of them, not removed
+                                   }), possibles.end());
     return possibles;
 }
 
@@ -80,16 +76,12 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::v
     for (auto indPoss = allPossVect.begin(); indPoss != allPossVect.end(); indPoss++){
         int index = indPoss->first;
         std::vector<int>& possibles = indPoss->second;
-        auto rw = this->row(rowNum(index));
-        auto cl = this->col(colNum(index));
-        auto bx = this->box(boxNum(index));
+        auto rw_filled = this->row_filled(rowNum(index));
+        auto cl_filled = this->col_filled(colNum(index));
+        auto bx_filled = this->box_filled(boxNum(index));
         possibles.erase(std::remove_if(possibles.begin(), possibles.end(),
-                                       [&rw, &cl, &bx](int possible){
-                                           if (std::find(rw.begin(), rw.end(), possible) != rw.end())
-                                               return true;
-                                           if (std::find(cl.begin(), cl.end(), possible) != cl.end())
-                                               return true;
-                                           if (std::find(bx.begin(), bx.end(), possible) != bx.end())
+                                       [&rw_filled, &cl_filled, &bx_filled](int possible){
+                                           if (rw_filled[possible] || cl_filled[possible] || bx_filled[possible])
                                                return true;
                                            
                                            return false; //Not found in any of them, not removed
