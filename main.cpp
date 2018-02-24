@@ -21,6 +21,11 @@ int main() {
     struct timeval tp;
     gettimeofday(&tp, NULL);
     auto result = Solver::solve(testS);
+    if (result.second){
+        std::cout << result.first;
+    } else {
+        std::cout << "Puzzle has no solutions \n";
+    }
     long int start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
     for (int i = 0; i < 1000; i++){
         Sudoku testS(testSud);
@@ -43,6 +48,35 @@ int main() {
     } else {
         std::cout << "Puzzle has no solutions \n";
     }
+    
+    std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> exhaustiveTest{
+        0,0,0,0,0,0,0,1,0,
+        0,0,0,0,0,2,0,0,3,
+        0,0,0,4,0,0,0,0,0,
+        0,0,0,0,0,0,5,0,0,
+        4,0,1,6,0,0,0,0,0,
+        0,0,7,1,0,0,0,0,0,
+        0,5,0,0,0,0,2,0,0,
+        0,0,0,0,8,0,0,4,0,
+        0,3,0,9,1,0,0,0,0
+    };
+    Sudoku test(exhaustiveTest);
+    std::vector<Sudoku> solutions;
+    std::cout << "Exhaustive solving: \n";
+    std::cout << test;
+    gettimeofday(&tp, NULL);
+    start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+    Solver::exhaustiveSolve(test, solutions);
+    gettimeofday(&tp, NULL);
+    end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+    std::cout << "Solutions: \n";
+    for (auto& sol: solutions){
+        std::cout << sol;
+    }
+    std::cout << "Time taken for exhaustive solutions: " << end - start << " milliseconds\n";
+
+    
+    
 //        std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> testSud;
 //        for (int i = 0; i < MAGNITUDE_SQR*MAGNITUDE_SQR; i++){
 //            testSud[i] = rand() % 37;

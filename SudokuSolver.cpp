@@ -21,22 +21,52 @@ std::pair<Sudoku, bool> Solver::solve(Sudoku& sud){
 //    }
     
     auto nbrs = sud.neighbours();
-    return solveVector(nbrs);
+    return solveSudokuNeighbours(nbrs);
 }
 
-std::pair<Sudoku, bool> Solver::solveVector(std::deque<Sudoku>& nbrs){
-    //std::cout << "SolveVector called" << std::endl; //debug
+std::pair<Sudoku, bool> Solver::solveSudokuNeighbours(std::deque<Sudoku>& nbrs){
+    //std::cout << "solveSudokuNeighbours called" << std::endl; //debug
     if (nbrs.size() == 0){
         return {Sudoku(), false};
     }
-    //auto firstResult = solve(nbrs.back());
     auto firstResult = solve(nbrs[0]);
     if (!firstResult.second) {
-        //std::swap(nbrs[0], nbrs.back());
-        //nbrs.pop_back();
-        //nbrs.erase(nbrs.begin()); //remove first element
         nbrs.pop_front();
-        return solveVector(nbrs);
+        return solveSudokuNeighbours(nbrs);
     }
     return firstResult;
+}
+
+void Solver::exhaustiveSolve(Sudoku& sud, std::vector<Sudoku>& solutions){
+    if (sud.isComplete()){
+        std::cout << "A. Solution found! \n" << sud << std::endl;
+        solutions.emplace_back(sud);
+        return;
+    }
+    while(!sud.isDivergent()){
+        //std::cout << "Possibles filled " << std::endl; //debug
+        sud = sud.fillPossibles();
+        if (sud.isComplete()){
+            std::cout << "B. Solution found! \n" << sud << std::endl;
+            solutions.emplace_back(sud);
+            return;
+        }
+    }
+    //    std::cout << sud.EmptyPositionsPossibilities();
+    //    if(sud.invalidPuzzle()){
+    //        return {sud, false};
+    //    }
+    
+    auto nbrs = sud.neighbours();
+    exhaustiveSolveSudokuNeighbours(nbrs, solutions);
+}
+
+void Solver::exhaustiveSolveSudokuNeighbours(std::deque<Sudoku>& nbrs, std::vector<Sudoku>& solutions){
+    //std::cout << "exhaustiveSolveSudokuNeighbours called" << std::endl; //debug
+    if (nbrs.size() == 0){
+        return;
+    }
+    exhaustiveSolve(nbrs[0], solutions);
+    nbrs.pop_front();
+    exhaustiveSolveSudokuNeighbours(nbrs, solutions);
 }
