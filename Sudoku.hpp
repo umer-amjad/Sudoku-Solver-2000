@@ -49,6 +49,10 @@ private:
     std::array<int, MAGNITUDE_SQR> col(int n);
     std::array<int, MAGNITUDE_SQR> box(int n);
     
+    std::array<bool, MAGNITUDE_SQR+1> row_filled(int n);
+    std::array<bool, MAGNITUDE_SQR+1> col_filled(int n);
+    std::array<bool, MAGNITUDE_SQR+1> box_filled(int n);
+    
     Sudoku createNeighbour(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entries, int index, int value, int possValue);
 public:
     Sudoku(){}; //empty sudoku

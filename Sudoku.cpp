@@ -129,6 +129,40 @@ std::array<int, MAGNITUDE_SQR> Sudoku::box(int n){
     return result;
 }
 
+std::array<bool, MAGNITUDE_SQR+1> Sudoku::row_filled(int n){
+    std::array<bool, MAGNITUDE_SQR+1> result{false};
+    for (int i = 0; i < MAGNITUDE_SQR; i++){
+        int val = entry[i+n*MAGNITUDE_SQR];
+        if (val != 0){
+            result[val] = true;
+        }
+    }
+    return result;
+}
+std::array<bool, MAGNITUDE_SQR+1> Sudoku::col_filled(int n){
+    std::array<bool, MAGNITUDE_SQR+1> result{false};
+    for (int i = 0; i < MAGNITUDE_SQR; i++){
+        int val = entry[n+i*MAGNITUDE_SQR];
+        if (val != 0){
+            result[val] = true;
+        }
+    }
+    return result;
+}
+std::array<bool, MAGNITUDE_SQR+1> Sudoku::box_filled(int n){
+    std::array<bool, MAGNITUDE_SQR+1> result{false};
+    int colStart = MAGNITUDE*(n % MAGNITUDE);
+    int rowStart = MAGNITUDE*(n / MAGNITUDE);
+    int boxStart = MAGNITUDE_SQR*rowStart + colStart;
+    for (int i = 0; i < MAGNITUDE_SQR; i++){
+        int val = entry[boxStart + (i % MAGNITUDE) + (i / MAGNITUDE) * MAGNITUDE_SQR];
+        if (val != 0){
+            result[val] = true;
+        }
+    }
+    return result;
+}
+
 std::deque<Sudoku> Sudoku::neighbours(){
     auto smallestPossList = allPossVect.back(); // take out first element
     allPossVect.pop_back();
