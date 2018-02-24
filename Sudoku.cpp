@@ -31,12 +31,13 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entryList): entry(en
             allPossVect.emplace_back(std::make_pair(i, findPossibles(i)));
             if (allPossVect.back().second.size() < min_possibles_size){
                 min_iterator = std::prev(allPossVect.end());
-                min_possibles_size = allPossVect.back().second.size();
+                min_possibles_size = (int)allPossVect.back().second.size();
             }
         }
         i++;
     }
-    std::sort(min_iterator, allPossVect.end(), PossVectCompare());
+    //TODO: Debug allPossVect.begin() replaced with min_iterator() produces memory errors
+    std::sort(allPossVect.begin(), allPossVect.end(), PossVectCompare());
     //    std::cout << *this;
     //    std::cout << EmptyPositionsPossibilities();
 }
@@ -59,7 +60,7 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::v
                                        }), possibles.end());
         if (possibles.size() < min_possibles_size){
             min_iterator = indPoss;
-            min_possibles_size = possibles.size();
+            min_possibles_size = (int)possibles.size();
         }
     }
     std::sort(min_iterator, allPossVect.end(), PossVectCompare());

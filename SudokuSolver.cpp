@@ -39,7 +39,7 @@ std::pair<Sudoku, bool> Solver::solveSudokuNeighbours(std::deque<Sudoku>& nbrs){
 
 void Solver::exhaustiveSolve(Sudoku& sud, std::vector<Sudoku>& solutions){
     if (sud.isComplete()){
-        std::cout << "A. Solution found! \n" << sud << std::endl;
+        //std::cout << "A. Solution found! \n" << sud << std::endl;
         solutions.emplace_back(sud);
         return;
     }
@@ -47,7 +47,7 @@ void Solver::exhaustiveSolve(Sudoku& sud, std::vector<Sudoku>& solutions){
         //std::cout << "Possibles filled " << std::endl; //debug
         sud = sud.fillPossibles();
         if (sud.isComplete()){
-            std::cout << "B. Solution found! \n" << sud << std::endl;
+            //std::cout << "B. Solution found! \n" << sud << std::endl;
             solutions.emplace_back(sud);
             return;
         }
