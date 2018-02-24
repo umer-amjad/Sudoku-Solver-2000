@@ -34,15 +34,14 @@ bool operator<(Sudoku const& sud1, Sudoku const& sud2){
     return size1 < size2;
 }
 
-
 std::vector<int> Sudoku::findPossibles(int pos){
     std::vector<int> possibles = allPoss;
-    auto rw_filled = this->row_filled(rowNum(pos));
-    auto cl_filled = this->col_filled(colNum(pos));
-    auto bx_filled = this->box_filled(boxNum(pos));
+    auto rwFilled = this->rowFilled(rowNum(pos));
+    auto clFilled = this->colFilled(colNum(pos));
+    auto bxFilled = this->boxFilled(boxNum(pos));
     possibles.erase(std::remove_if(possibles.begin(), possibles.end(),
-                                   [&rw_filled, &cl_filled, &bx_filled](int possible){
-                                       if (rw_filled[possible] || cl_filled[possible] || bx_filled[possible])
+                                   [&rwFilled, &clFilled, &bxFilled](int possible){
+                                       if (rwFilled[possible] || clFilled[possible] || bxFilled[possible])
                                            return true;
                                        
                                        return false; //Not found in any of them, not removed
@@ -76,12 +75,12 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::v
     for (auto indPoss = allPossVect.begin(); indPoss != allPossVect.end(); indPoss++){
         int index = indPoss->first;
         std::vector<int>& possibles = indPoss->second;
-        auto rw_filled = this->row_filled(rowNum(index));
-        auto cl_filled = this->col_filled(colNum(index));
-        auto bx_filled = this->box_filled(boxNum(index));
+        auto rwFilled = this->rowFilled(rowNum(index));
+        auto clFilled = this->colFilled(colNum(index));
+        auto bxFilled = this->boxFilled(boxNum(index));
         possibles.erase(std::remove_if(possibles.begin(), possibles.end(),
-                                       [&rw_filled, &cl_filled, &bx_filled](int possible){
-                                           if (rw_filled[possible] || cl_filled[possible] || bx_filled[possible])
+                                       [&rwFilled, &clFilled, &bxFilled](int possible){
+                                           if (rwFilled[possible] || clFilled[possible] || bxFilled[possible])
                                                return true;
                                            
                                            return false; //Not found in any of them, not removed
@@ -121,7 +120,7 @@ std::array<int, MAGNITUDE_SQR> Sudoku::box(int n){
     return result;
 }
 
-std::array<bool, MAGNITUDE_SQR+1> Sudoku::row_filled(int n){
+std::array<bool, MAGNITUDE_SQR+1> Sudoku::rowFilled(int n){
     std::array<bool, MAGNITUDE_SQR+1> result{false};
     for (int i = 0; i < MAGNITUDE_SQR; i++){
         int val = entry[i+n*MAGNITUDE_SQR];
@@ -131,7 +130,7 @@ std::array<bool, MAGNITUDE_SQR+1> Sudoku::row_filled(int n){
     }
     return result;
 }
-std::array<bool, MAGNITUDE_SQR+1> Sudoku::col_filled(int n){
+std::array<bool, MAGNITUDE_SQR+1> Sudoku::colFilled(int n){
     std::array<bool, MAGNITUDE_SQR+1> result{false};
     for (int i = 0; i < MAGNITUDE_SQR; i++){
         int val = entry[n+i*MAGNITUDE_SQR];
@@ -141,7 +140,7 @@ std::array<bool, MAGNITUDE_SQR+1> Sudoku::col_filled(int n){
     }
     return result;
 }
-std::array<bool, MAGNITUDE_SQR+1> Sudoku::box_filled(int n){
+std::array<bool, MAGNITUDE_SQR+1> Sudoku::boxFilled(int n){
     std::array<bool, MAGNITUDE_SQR+1> result{false};
     int colStart = MAGNITUDE*(n % MAGNITUDE);
     int rowStart = MAGNITUDE*(n / MAGNITUDE);
