@@ -23,33 +23,29 @@ extern const std::vector<int> allPoss;
 typedef std::pair<int, std::vector<int>> PossVect;
 
 struct PossVectCompare {
-    inline bool operator()(const PossVect &a, const PossVect &b) {
-        if (a.second.size() == b.second.size())
-            return a.first > b.first;
-        return a.second.size() > b.second.size();
-    }
+    inline bool operator()(const PossVect &a, const PossVect &b);
 };
+
+//Example:
+// Think of
+// a b   c d
+// e f   g h
+//
+// i j   k l
+// m n   o p
+// as:      {a, b, c, d, e, f, g, h, i, j,  k,  l,  m,  n,  o,  p}
+// with
+//  pos:    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
+//  row(0): {a, b, c, d} and so on for row(1), row(2), row(3)
+//  col(0): {a, e, i, m} and so on for col(1), col(2), col(3)
+//  box(0): {a, b, e, f}
+//  box(1): {c, d, g, h}
+//  box(2): {i, j, m, n} and so on (i.e. boxes are read left to right, top to bottom)
 
 class Sudoku {
 private:
     std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entry;
     std::vector<PossVect> allPossVect; //set of possibility vectors
-    
-    //Example:
-    // Think of
-    // a b   c d
-    // e f   g h
-    //
-    // i j   k l
-    // m n   o p
-    // as:      {a, b, c, d, e, f, g, h, i, j,  k,  l,  m,  n,  o,  p}
-    // with
-    //  pos:    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
-    //  row(0): {a, b, c, d} and so on for row(1), row(2), row(3)
-    //  col(0): {a, e, i, m} and so on for col(1), col(2), col(3)
-    //  box(0): {a, b, e, f}
-    //  box(1): {c, d, g, h}
-    //  box(2): {i, j, m, n} and so on (i.e. boxes are read left to right, top to bottom)
     
     //given a "pos", returns which row/col/box the pos lies on
     static inline int rowNum(int pos);
@@ -73,21 +69,14 @@ private:
     void colPopulateEmpties(int n, std::vector<int>& emptyPos);
     void boxPopulateEmpties(int n, std::vector<int>& emptyPos);
 
+    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossVect> newPossVect); //creating Sudokus when possVect has already been created (neighbours calculation)
+    Sudoku createNeighbour(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entries, int index, int value, int possValue);
     
     std::vector<int> findPossibles(int i);
     
-    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossVect> newPossVect); //creating Sudokus when possVect has already been created (neighbours calculation)
-    
-    Sudoku createNeighbour(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entries, int index, int value, int possValue);
 public:
     Sudoku(){}; //empty sudoku
-    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entryList);
-    std::string showEmptyPos();
-    bool isComplete();
-    bool isDivergent();
-    bool invalidPuzzle(); // invalid if no numbers possible at some position
-    Sudoku fillPossibles();
-    std::deque<Sudoku> neighbours();
+    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entryList); //constructor takes in array representing puzzle
     
     inline int& operator[](size_t index) {
         return entry[index];
@@ -95,8 +84,16 @@ public:
     inline int operator[](size_t index) const {
         return entry[index];
     };
-    friend std::ostream& operator<< (std::ostream& o, const Sudoku& fn);
+    
+    bool isComplete();
+    bool isDivergent();
+    bool invalidPuzzle(); // invalid if no numbers possible at some position
+    std::deque<Sudoku> neighbours();
+    Sudoku fillPossibles();
+    std::string EmptyPositionsPossibilities();
+    
     friend bool operator< (Sudoku const& sud1, Sudoku const& sud2);
+    friend std::ostream& operator<< (std::ostream& o, const Sudoku& fn);
 };
 
 #endif /* Sudoku_hpp */

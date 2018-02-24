@@ -15,7 +15,7 @@ std::pair<Sudoku, bool> Solver::solve(Sudoku& sud){
             return {sud, true};
         }
     }
-//    std::cout << sud.showEmptyPos();
+//    std::cout << sud.EmptyPositionsPossibilities();
 //    if(sud.invalidPuzzle()){
 //        return {sud, false};
 //    }
