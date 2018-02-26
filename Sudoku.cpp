@@ -80,7 +80,7 @@ int Sudoku::boxNum(int pos){
     return MAGNITUDE*(pos / (MAGNITUDE_SQR*MAGNITUDE)) + (pos % MAGNITUDE_SQR)/MAGNITUDE;
 }
 
-std::array<int, MAGNITUDE_SQR> Sudoku::row(int n){
+std::array<int, MAGNITUDE_SQR> Sudoku::row(int n) const {
     std::array<int, MAGNITUDE_SQR> result;
     for (int i = 0; i < MAGNITUDE_SQR; i++){
         result[i] = entry[i+n*MAGNITUDE_SQR];
@@ -88,7 +88,7 @@ std::array<int, MAGNITUDE_SQR> Sudoku::row(int n){
     return result;
 }
 
-std::array<int, MAGNITUDE_SQR> Sudoku::col(int n){
+std::array<int, MAGNITUDE_SQR> Sudoku::col(int n) const {
     std::array<int, MAGNITUDE_SQR> result;
     for (int i = 0; i < MAGNITUDE_SQR; i++){
         result[i] = entry[n+i*MAGNITUDE_SQR];
@@ -96,7 +96,7 @@ std::array<int, MAGNITUDE_SQR> Sudoku::col(int n){
     return result;
 }
 
-std::array<int, MAGNITUDE_SQR> Sudoku::box(int n){
+std::array<int, MAGNITUDE_SQR> Sudoku::box(int n) const {
     std::array<int, MAGNITUDE_SQR> result;
     int colStart = MAGNITUDE*(n % MAGNITUDE);
     int rowStart = MAGNITUDE*(n / MAGNITUDE);
@@ -107,7 +107,7 @@ std::array<int, MAGNITUDE_SQR> Sudoku::box(int n){
     return result;
 }
 
-std::array<bool, MAGNITUDE_SQR+1> Sudoku::rowFilled(int n){
+std::array<bool, MAGNITUDE_SQR+1> Sudoku::rowFilled(int n) const {
     std::array<bool, MAGNITUDE_SQR+1> result{false};
     for (int i = 0; i < MAGNITUDE_SQR; i++){
         int val = entry[i+n*MAGNITUDE_SQR];
@@ -118,7 +118,7 @@ std::array<bool, MAGNITUDE_SQR+1> Sudoku::rowFilled(int n){
     return result;
 }
 
-std::array<bool, MAGNITUDE_SQR+1> Sudoku::colFilled(int n){
+std::array<bool, MAGNITUDE_SQR+1> Sudoku::colFilled(int n) const {
     std::array<bool, MAGNITUDE_SQR+1> result{false};
     for (int i = 0; i < MAGNITUDE_SQR; i++){
         int val = entry[n+i*MAGNITUDE_SQR];
@@ -129,7 +129,7 @@ std::array<bool, MAGNITUDE_SQR+1> Sudoku::colFilled(int n){
     return result;
 }
 
-std::array<bool, MAGNITUDE_SQR+1> Sudoku::boxFilled(int n){
+std::array<bool, MAGNITUDE_SQR+1> Sudoku::boxFilled(int n) const {
     std::array<bool, MAGNITUDE_SQR+1> result{false};
     int colStart = MAGNITUDE*(n % MAGNITUDE);
     int rowStart = MAGNITUDE*(n / MAGNITUDE);
@@ -143,7 +143,7 @@ std::array<bool, MAGNITUDE_SQR+1> Sudoku::boxFilled(int n){
     return result;
 }
 
-std::vector<int> Sudoku::findPossibles(int pos){
+std::vector<int> Sudoku::findPossibles(int pos) const {
     std::vector<int> possibles = allPoss;
     auto rwFilled = rowFilled(rowNum(pos));
     auto clFilled = colFilled(colNum(pos));
@@ -160,22 +160,22 @@ std::vector<int> Sudoku::findPossibles(int pos){
 
 // public member functions:
 
-bool Sudoku::isComplete(){
+bool Sudoku::isComplete() const {
     return (allPossVect.size() == 0);
 }
 
-bool Sudoku::isDivergent(){
+bool Sudoku::isDivergent() const {
     if (allPossVect.back().second.size() == 0){
         return true;
     }
     return allPossVect.back().second.size() > 1;
 }
 
-bool Sudoku::invalidPuzzle(){
+bool Sudoku::invalidPuzzle() const {
     return allPossVect.back().second.size() == 0;
 }
 
-std::deque<Sudoku> Sudoku::neighbours(){
+std::deque<Sudoku> Sudoku::neighbours() {
     auto smallestPossList = allPossVect.back(); // take out first element
     allPossVect.pop_back();
     int numNbrs = (int) smallestPossList.second.size();
@@ -208,7 +208,7 @@ Sudoku Sudoku::fillPossibles(){
     return Sudoku(entry, allPossVect);
 }
 
-std::string Sudoku::EmptyPositionsPossibilities(){
+std::string Sudoku::EmptyPositionsPossibilities() const {
     std::stringstream result;
     //std::cout << "Set size is " << allPossVect.size() << '\n'; debug
     for (auto possVect : allPossVect){

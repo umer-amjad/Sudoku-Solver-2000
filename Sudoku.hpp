@@ -53,26 +53,26 @@ private:
     static inline int boxNum(int pos);
     
     //returns nth the row/col/box
-    std::array<int, MAGNITUDE_SQR> row(int n);
-    std::array<int, MAGNITUDE_SQR> col(int n);
-    std::array<int, MAGNITUDE_SQR> box(int n);
+    std::array<int, MAGNITUDE_SQR> row(int n) const;
+    std::array<int, MAGNITUDE_SQR> col(int n) const;
+    std::array<int, MAGNITUDE_SQR> box(int n) const;
     
     // returns an array of bools, with the index of an element in the array specifies whether
     // the number representing that index is in the nth row/col/box
     // e.g. if rowFilled(6)[3] is true, then the number 3 is filled in in the 6th row
-    std::array<bool, MAGNITUDE_SQR+1> rowFilled(int n);
-    std::array<bool, MAGNITUDE_SQR+1> colFilled(int n);
-    std::array<bool, MAGNITUDE_SQR+1> boxFilled(int n);
+    std::array<bool, MAGNITUDE_SQR+1> rowFilled(int n) const;
+    std::array<bool, MAGNITUDE_SQR+1> colFilled(int n) const;
+    std::array<bool, MAGNITUDE_SQR+1> boxFilled(int n) const;
 
     // for the nth row/col/box, push_backs the pos's that are empty into the vector empty_pos
-    void rowPopulateEmpties(int n, std::vector<int>& emptyPos);
-    void colPopulateEmpties(int n, std::vector<int>& emptyPos);
-    void boxPopulateEmpties(int n, std::vector<int>& emptyPos);
+    void rowPopulateEmpties(int n, std::vector<int>& emptyPos) const;
+    void colPopulateEmpties(int n, std::vector<int>& emptyPos) const;
+    void boxPopulateEmpties(int n, std::vector<int>& emptyPos) const;
 
     Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossVect> newPossVect); //creating Sudokus when possVect has already been created (neighbours calculation)
     Sudoku createNeighbour(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entries, int index, int value, int possValue);
     
-    std::vector<int> findPossibles(int i);
+    std::vector<int> findPossibles(int i) const;
     
 public:
     Sudoku(){}; //empty sudoku
@@ -85,12 +85,12 @@ public:
         return entry[index];
     };
     
-    bool isComplete();
-    bool isDivergent();
-    bool invalidPuzzle(); // invalid if no numbers possible at some position
+    bool isComplete() const;
+    bool isDivergent() const;
+    bool invalidPuzzle() const; // invalid if no numbers possible at some position
     std::deque<Sudoku> neighbours();
     Sudoku fillPossibles();
-    std::string EmptyPositionsPossibilities();
+    std::string EmptyPositionsPossibilities() const;
     
     friend bool operator< (Sudoku const& sud1, Sudoku const& sud2);
     friend std::ostream& operator<< (std::ostream& o, const Sudoku& fn);
