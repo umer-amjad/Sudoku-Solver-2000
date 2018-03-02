@@ -14,10 +14,11 @@ Note that the project was written using C++14, but the features used should allo
 ### Future Plans ###
 
 Short term plans include:
-- Increase algorithmic efficiency (this will be implemented in the "createNeighbour" function)
+- Increase algorithmic efficiency (this will be implemented in the "createNeighbour" function) (IN PROGRESS)
 - Create a template out of the Sudoku class (with the template parameter being the size (or "MAGNITUDE") of the Sudoku) so that sudokus of different magnitudes can be solved without re-compiling the program
 - More user-friendly command-line interface, to input puzzles in the command line instead of in the code itself
+- ~~Finding the set of all possible solutions for ill-formed puzzles, as well as the number of all possible solutions~~
 
 Long term plans include:
-- Finding the set of all possible solutions for ill-formed puzzles, as well as the number of all possible solutions
 - Using an image detection library to solve Sudoku puzzles input as images
+- Run algorithm multithreaded where possible, for faster solving
