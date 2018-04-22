@@ -23,21 +23,27 @@ bool PossVectCompare::operator()(const PossVect &a, const PossVect &b){
 
 Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entryList): entry(entryList){
     int i = 0;
+    int min_index = 0;
     int min_possibles_size = MAGNITUDE_SQR;
+    allPossVect.reserve(81); //debug, so that iterators are not invalidated by vector reallocation
     auto min_iterator = allPossVect.begin();
     for (auto e : entry){
         if (e == 0){
             //std::cout << "Here at pos " << i << '\n';
             allPossVect.emplace_back(std::make_pair(i, findPossibles(i)));
             if (allPossVect.back().second.size() < min_possibles_size){
+                //std::cout << "At " << i << " iteration,  allPossVect size is " << allPossVect.size() << std::endl;
                 min_iterator = std::prev(allPossVect.end());
+                min_index = min_iterator - allPossVect.begin();
                 min_possibles_size = (int)allPossVect.back().second.size();
             }
         }
         i++;
     }
     //TODO: Debug allPossVect.begin() replaced with min_iterator() produces memory errors
-    std::sort(allPossVect.begin(), allPossVect.end(), PossVectCompare());
+    // iterators invalidated because of many insertions into vector above
+    //std::cout << "At: "  << min_iterator - allPossVect.begin() << std::endl;
+    std::sort(min_iterator, allPossVect.end(), PossVectCompare());
     //    std::cout << *this;
     //    std::cout << EmptyPositionsPossibilities();
 }
