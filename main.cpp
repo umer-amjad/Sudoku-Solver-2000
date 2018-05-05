@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <sys/time.h>
+#include <algorithm>
 #include "Sudoku.hpp"
 #include "SudokuSolver.hpp"
 

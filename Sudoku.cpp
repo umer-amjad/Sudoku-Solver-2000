@@ -4,6 +4,8 @@
 
 #include "Sudoku.hpp"
 
+#include <algorithm>
+
 //helpers:
 
 const std::vector<int> allPoss = []{
