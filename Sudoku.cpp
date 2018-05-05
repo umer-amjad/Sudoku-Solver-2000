@@ -216,7 +216,7 @@ Sudoku Sudoku::fillPossibles(){
     return Sudoku(entry, allPossVect);
 }
 
-std::string Sudoku::EmptyPositionsPossibilities() const {
+std::string Sudoku::emptyPositionsPossibilities() const {
     std::stringstream result;
     //std::cout << "Set size is " << allPossVect.size() << '\n'; debug
     for (auto possVect : allPossVect){

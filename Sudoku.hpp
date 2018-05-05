@@ -90,7 +90,7 @@ public:
     bool invalidPuzzle() const; // invalid if no numbers possible at some position
     std::deque<Sudoku> neighbours();
     Sudoku fillPossibles();
-    std::string EmptyPositionsPossibilities() const;
+    std::string emptyPositionsPossibilities() const;
     
     friend bool operator< (Sudoku const& sud1, Sudoku const& sud2);
     friend std::ostream& operator<< (std::ostream& o, const Sudoku& fn);
