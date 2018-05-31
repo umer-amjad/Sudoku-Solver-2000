@@ -9,7 +9,7 @@
 
 #include "Sudoku.hpp"
 
-namespace Solver{
+namespace Solver {
     // given a sudoku puzzle, if a solution is found, returns {Solution, true}
     // if no solution is found, second component is false
     std::pair<Sudoku, bool> solve(Sudoku& sud);
