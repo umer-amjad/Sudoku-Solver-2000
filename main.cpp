@@ -3,7 +3,10 @@
 #include <sys/time.h>
 #include <algorithm>
 #include "Sudoku.hpp"
+#include "SudokuI.hpp"
 #include "SudokuSolver.hpp"
+
+
 
 int main() {
     std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> testSud{

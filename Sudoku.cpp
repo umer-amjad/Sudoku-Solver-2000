@@ -66,15 +66,15 @@ Sudoku::Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::v
 
 //private member functions:
 
-int Sudoku::rowNum(int pos){
+int Sudoku::rowNum(int pos) const {
     return pos / MAGNITUDE_SQR;
 }
 
-int Sudoku::colNum(int pos){
+int Sudoku::colNum(int pos) const {
     return pos % MAGNITUDE_SQR;
 }
 
-int Sudoku::boxNum(int pos){
+int Sudoku::boxNum(int pos) const {
     return MAGNITUDE*(pos / (MAGNITUDE_SQR*MAGNITUDE)) + (pos % MAGNITUDE_SQR)/MAGNITUDE;
 }
 
@@ -226,8 +226,6 @@ bool operator<(Sudoku const& sud1, Sudoku const& sud2){
         return sud1.allPossVect.size() < sud2.allPossVect.size();
     int size1 = (int) sud1.allPossVect.back().second.size();
     int size2 = (int) sud2.allPossVect.back().second.size();
-    //        if (size1 == size2)
-    //            return sud1.allPossVect.size() > sud2.allPossVect.size();
     return size1 < size2;
 }
 

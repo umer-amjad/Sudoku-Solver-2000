@@ -5,32 +5,36 @@
 #ifndef SUDOKUI_HPP
 #define SUDOKUI_HPP
 
-typedef std::pair<int, std::vector<int>> PossVect;
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <array>
+#include <vector>
+#include <deque>
+#include <ostream>
+#include <string>
+#include <sstream>
+#include <set>
+#include <utility>
 
-struct PossVectCompare {
-    inline bool operator()(const PossVect &a, const PossVect &b);
-};
+typedef std::pair<int, std::vector<int>> PossVect;
 
 class SudokuI {
     std::vector<PossVect> allPossVect; //set of possibility vectors
 public:
-    Sudoku(){}; //empty sudoku
-    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entryList); //constructor takes in array representing puzzle
+    SudokuI(){}; //empty sudoku
     
-    inline int& operator[](size_t index);
-    inline int operator[](size_t index) const;
+    virtual bool isComplete() const = 0;
+    virtual bool isDivergent() const = 0;
+    virtual bool invalidPuzzle() const = 0; // invalid if no numbers possible at some position
+    virtual std::deque<SudokuI> neighbours() = 0;
+    virtual SudokuI& fillPossibles() = 0;
+    virtual std::string emptyPositionsPossibilities() const = 0;
     
-    bool isComplete() const;
-    bool isDivergent() const;
-    bool invalidPuzzle() const; // invalid if no numbers possible at some position
-    std::deque<Sudoku> neighbours();
-    Sudoku fillPossibles();
-    std::string emptyPositionsPossibilities() const;
+    virtual std::string toString() const = 0; //operator << calls print, which is overloaded appropriately
     
-    void toString() const; //operator << calls print, which is overloaded appropriately
-    
-    friend bool operator< (Sudoku const& sud1, Sudoku const& sud2);
-    friend std::ostream& operator<< (std::ostream& o, const Sudoku& fn);
+    friend bool operator< (SudokuI const& sud1, SudokuI const& sud2);
+    friend std::ostream& operator<< (std::ostream& o, const SudokuI& fn);
 };
 
 

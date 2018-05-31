@@ -48,9 +48,9 @@ private:
     std::vector<PossVect> allPossVect; //set of possibility vectors
     
     //given a "pos", returns which row/col/box the pos lies on
-    inline int rowNum(int pos);
-    inline int colNum(int pos);
-    inline int boxNum(int pos);
+    inline int rowNum(int pos) const;
+    inline int colNum(int pos) const;
+    inline int boxNum(int pos) const;
     
     //returns nth the row/col/box
     std::array<int, MAGNITUDE_SQR> row(int n) const;
