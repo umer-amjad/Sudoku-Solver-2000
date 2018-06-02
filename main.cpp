@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "Sudoku.hpp"
 #include "SudokuI.hpp"
+//#include "SudokuN.hpp" when templating is complete
 #include "SudokuSolver.hpp"
 
 

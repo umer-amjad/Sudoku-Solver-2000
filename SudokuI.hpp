@@ -20,16 +20,17 @@
 typedef std::pair<int, std::vector<int>> PossVect;
 
 class SudokuI {
+protected:
     std::vector<PossVect> allPossVect; //set of possibility vectors
 public:
     SudokuI(){}; //empty sudoku
     
-    virtual bool isComplete() const = 0;
-    virtual bool isDivergent() const = 0;
-    virtual bool invalidPuzzle() const = 0; // invalid if no numbers possible at some position
+    bool isComplete() const;
+    bool isDivergent() const;
+    bool invalidPuzzle() const; // invalid if no numbers possible at some position
     virtual std::deque<SudokuI> neighbours() = 0;
-    virtual SudokuI& fillPossibles() = 0;
-    virtual std::string emptyPositionsPossibilities() const = 0;
+    
+    std::string emptyPositionsPossibilities() const;
     
     virtual std::string toString() const = 0; //operator << calls print, which is overloaded appropriately
     
