@@ -4,12 +4,38 @@
 #define SUDOKUN_HPP
 
 #include <sstream>
+#include <memory>
 
 #include "SudokuI.hpp"
+
+struct PossVectCompare {
+    inline bool operator()(const PossVect &a, const PossVect &b);
+};
+
+bool PossVectCompare::operator()(const PossVect &a, const PossVect &b){
+    if (a.second.size() == b.second.size())
+        return a.first > b.first;
+    return a.second.size() > b.second.size();
+}
 
 template<int MAGNITUDE>
 class Sudoku : public SudokuI {
     static constexpr int MAGNITUDE_SQR = MAGNITUDE * MAGNITUDE;
+
+    const std::vector<int> allPoss = []{
+        std::vector<int> v(MAGNITUDE_SQR);
+        for (int i = 0; i < MAGNITUDE_SQR; i++)
+            v[i] = i+1;
+        return v;
+    }();
+    
+    inline int& operator[](size_t index) {
+        return entry[index];
+    };
+    inline int operator[](size_t index) const {
+        return entry[index];
+    };
+    
     std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entry;
     
     //given a "pos", returns which row/col/box the pos lies on
@@ -86,7 +112,7 @@ class Sudoku : public SudokuI {
         return result;
     }
     
-    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossVect> newPossVect): entry(newEntryList), allPossVect(newPossVect) {
+    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossVect> newPossVect): SudokuI(newPossVect), entry(newEntryList) {
         int min_possibles_size = MAGNITUDE_SQR;
         auto min_iterator = allPossVect.begin();
         for (auto indPoss = allPossVect.begin(); indPoss != allPossVect.end(); indPoss++){
@@ -144,21 +170,25 @@ public:
         std::sort(allPossVect.begin() + min_index, allPossVect.end(), PossVectCompare());
     }
     
-    virtual std::deque<SudokuI> neighbours() const override {
+    virtual std::deque<std::shared_ptr<SudokuI>> neighbours() override {
+        std::shared_ptr<SudokuI> sudPtr {nullptr};
         auto smallestPossList = allPossVect.back(); // take out first element
         allPossVect.pop_back();
         int numNbrs = (int) smallestPossList.second.size();
-        std::deque<Sudoku> nbrs;
+        std::deque<std::shared_ptr<SudokuI>> nbrs;
         for (int i = 0; i < numNbrs; i++){
             std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntry = entry;
             newEntry[smallestPossList.first] = smallestPossList.second[i];
-            nbrs.push_back(Sudoku(newEntry, allPossVect));
+            sudPtr.reset(new Sudoku(newEntry, allPossVect));
+            nbrs.push_back(sudPtr);
         }
-        std::sort(nbrs.begin(), nbrs.end());
+        std::sort(nbrs.begin(), nbrs.end(), [](const std::shared_ptr<SudokuI> sudA, const std::shared_ptr<SudokuI> sudB) {
+            return (*sudA) < (*sudB);
+        });
         return nbrs;
     }
     
-    Sudoku& fillPossibles() const {
+    std::shared_ptr<SudokuI> fillPossibles() override {
         //keep track of which numbers have been used ("visited"), in case the puzzle has reached a point
         //where the only possibles in the same row/box/col are overlapping (contradictorily).
         bool visited[MAGNITUDE_SQR + 1] = {false}; //starts at 0, but uses values from 1
@@ -174,7 +204,9 @@ public:
         }
         allPossVect.erase(possVec.base(), allPossVect.end());
         //std::cout << "After filling pos:\n" << EmptyPositionsPossibilities();
-        return Sudoku(entry, allPossVect);
+        std::shared_ptr<SudokuI> toReturn;
+        toReturn.reset(new Sudoku(entry, allPossVect));
+        return toReturn;
     }
     
     virtual std::string toString() const override {
@@ -212,7 +244,7 @@ public:
                 o << "-";
         }
         o << "\n";
-        return o;
+        return o.str();
     }   
 };
 

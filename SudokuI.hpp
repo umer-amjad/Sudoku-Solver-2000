@@ -16,6 +16,7 @@
 #include <sstream>
 #include <set>
 #include <utility>
+#include <memory>
 
 typedef std::pair<int, std::vector<int>> PossVect;
 
@@ -23,12 +24,14 @@ class SudokuI {
 protected:
     std::vector<PossVect> allPossVect; //set of possibility vectors
 public:
-    SudokuI(){}; //empty sudoku
+    SudokuI() {};
+    SudokuI(std::vector<PossVect> newPossVect): allPossVect(newPossVect) {}; //Populating possibilities vector
     
     bool isComplete() const;
     bool isDivergent() const;
     bool invalidPuzzle() const; // invalid if no numbers possible at some position
-    virtual std::deque<SudokuI> neighbours() = 0;
+    virtual std::deque<std::shared_ptr<SudokuI>> neighbours() = 0;
+    virtual std::shared_ptr<SudokuI> fillPossibles() = 0;
     
     std::string emptyPositionsPossibilities() const;
     

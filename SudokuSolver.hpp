@@ -7,18 +7,19 @@
 
 #include <iostream>
 
-#include "Sudoku.hpp"
+#include "SudokuI.hpp"
+#include <memory>
 
 namespace Solver {
     // given a sudoku puzzle, if a solution is found, returns {Solution, true}
     // if no solution is found, second component is false
-    std::pair<Sudoku, bool> solve(Sudoku& sud);
-    std::pair<Sudoku, bool> solveSudokuNeighbours(std::deque<Sudoku>& nbrs);
+    std::pair<std::shared_ptr<SudokuI>, bool> solve(std::shared_ptr<SudokuI> sud);
+    std::pair<std::shared_ptr<SudokuI>, bool> solveSudokuNeighbours(std::deque<std::shared_ptr<SudokuI>>& nbrs);
     
     // given a sudoku puzzle, populates "solutions" with ALL POSSIBLE solutions
     // to the puzzle
-    void exhaustiveSolve(Sudoku& sud, std::vector<Sudoku>& solutions);
-    void exhaustiveSolveSudokuNeighbours(std::deque<Sudoku>& nbrs, std::vector<Sudoku>& solutions);
+    void exhaustiveSolve(std::shared_ptr<SudokuI> sud, std::vector<std::shared_ptr<SudokuI>>& solutions);
+    void exhaustiveSolveSudokuNeighbours(std::deque<std::shared_ptr<SudokuI>>& nbrs, std::vector<std::shared_ptr<SudokuI>>& solutions);
 };
 
 #endif /* SudokuSolver_hpp */

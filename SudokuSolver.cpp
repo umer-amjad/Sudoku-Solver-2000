@@ -4,25 +4,24 @@
 
 #include "SudokuSolver.hpp"
 
-std::pair<Sudoku, bool> Solver::solve(Sudoku& sud){
-    if (sud.isComplete()){
-        return {sud, true};
+std::pair<std::shared_ptr<SudokuI>, bool> Solver::solve(std::shared_ptr<SudokuI> sudPtr){
+    if (sudPtr->isComplete()){
+        return {sudPtr, true};
     }
-    
-    while(!sud.isDivergent()){
-        sud = sud.fillPossibles();
-        if (sud.isComplete()){
-            return {sud, true};
+ 
+    while(!sudPtr->isDivergent()){
+        sudPtr = sudPtr->fillPossibles();
+        if (sudPtr->isComplete()){
+            return {sudPtr, true};
         }
     }
-    
-    auto nbrs = sud.neighbours();
+    auto nbrs = sudPtr->neighbours();
     return solveSudokuNeighbours(nbrs);
 }
 
-std::pair<Sudoku, bool> Solver::solveSudokuNeighbours(std::deque<Sudoku>& nbrs){
+std::pair<std::shared_ptr<SudokuI>, bool> Solver::solveSudokuNeighbours(std::deque<std::shared_ptr<SudokuI>>& nbrs){
     if (nbrs.size() == 0){
-        return {Sudoku(), false};
+        return {nullptr, false};
     }
     auto firstResult = solve(nbrs[0]);
     if (!firstResult.second) {
@@ -32,25 +31,25 @@ std::pair<Sudoku, bool> Solver::solveSudokuNeighbours(std::deque<Sudoku>& nbrs){
     return firstResult;
 }
 
-void Solver::exhaustiveSolve(Sudoku& sud, std::vector<Sudoku>& solutions){
-    if (sud.isComplete()){
-        solutions.emplace_back(sud);
+void Solver::exhaustiveSolve(std::shared_ptr<SudokuI> sudPtr, std::vector<std::shared_ptr<SudokuI>>& solutions){
+    if (sudPtr->isComplete()){
+        solutions.emplace_back(sudPtr);
         return;
     }
     
-    while(!sud.isDivergent()){
-        sud = sud.fillPossibles();
-        if (sud.isComplete()){
-            solutions.emplace_back(sud);
+    while(!sudPtr->isDivergent()){
+        sudPtr = sudPtr->fillPossibles();
+        if (sudPtr->isComplete()){
+            solutions.emplace_back(sudPtr);
             return;
         }
     }
     
-    auto nbrs = sud.neighbours();
+    auto nbrs = sudPtr->neighbours();
     exhaustiveSolveSudokuNeighbours(nbrs, solutions);
 }
 
-void Solver::exhaustiveSolveSudokuNeighbours(std::deque<Sudoku>& nbrs, std::vector<Sudoku>& solutions){
+void Solver::exhaustiveSolveSudokuNeighbours(std::deque<std::shared_ptr<SudokuI>>& nbrs, std::vector<std::shared_ptr<SudokuI>>& solutions){
     if (nbrs.size() == 0){
         return;
     }
