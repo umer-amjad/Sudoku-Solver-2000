@@ -2,8 +2,7 @@
 #include <vector>
 #include <sys/time.h>
 #include <algorithm>
-#include "SudokuN.hpp" //when templating is complete
-//#include "Sudoku.hpp"
+#include "Sudoku.hpp" 
 #include "SudokuI.hpp"
 #include "SudokuSolver.hpp"
 
