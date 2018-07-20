@@ -5,16 +5,9 @@
 #ifndef SUDOKUI_HPP
 #define SUDOKUI_HPP
 
-#include <iostream>
-#include <iomanip>
-#include <cmath>
-#include <array>
+#include <iosfwd>
 #include <vector>
-#include <ostream>
 #include <string>
-#include <sstream>
-#include <set>
-#include <utility>
 
 struct PossibleAtIndex {
     int index;

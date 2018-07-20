@@ -3,10 +3,12 @@
 #ifndef SUDOKUN_HPP
 #define SUDOKUN_HPP
 
-#include <sstream>
-#include <memory>
 #include <list>
+#include <array>
 #include <algorithm>
+#include <sstream>
+#include <iomanip>
+#include <cmath>
 
 #include "SudokuI.hpp"
 

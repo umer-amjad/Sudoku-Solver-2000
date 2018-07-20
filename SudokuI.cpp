@@ -4,6 +4,9 @@
 
 #include "SudokuI.hpp"
 
+#include <ostream>
+#include <sstream>
+
 bool SudokuI::isComplete() const {
     return (allPossibles.size() == 0);
 }
