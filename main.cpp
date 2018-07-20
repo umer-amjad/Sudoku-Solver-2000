@@ -6,104 +6,119 @@
 #include "SudokuI.hpp"
 #include "SudokuSolver.hpp"
 
-int main(){
-    Sudoku<3> testS({
-        9,0,6,0,7,0,4,0,3,
-        0,0,0,4,0,0,2,0,0,
-        0,7,0,0,2,3,0,1,0,
-        5,0,0,0,0,0,1,0,0,
-        0,4,0,2,0,8,0,6,0,
-        0,0,3,0,0,0,0,0,5,
-        0,3,0,7,0,0,0,5,0,
-        0,0,7,0,0,5,0,0,0,
-        4,0,5,0,1,0,7,0,8
+int main() {
+    Sudoku<3> hardTest({
+        9, 0, 6, 0, 7, 0, 4, 0, 3,
+        0, 0, 0, 4, 0, 0, 2, 0, 0,
+        0, 7, 0, 0, 2, 3, 0, 1, 0,
+        5, 0, 0, 0, 0, 0, 1, 0, 0,
+        0, 4, 0, 2, 0, 8, 0, 6, 0,
+        0, 0, 3, 0, 0, 0, 0, 0, 5,
+        0, 3, 0, 7, 0, 0, 0, 5, 0,
+        0, 0, 7, 0, 0, 5, 0, 0, 0,
+        4, 0, 5, 0, 1, 0, 7, 0, 8
     });
-    std::cout << testS;
+    std::cout << hardTest;
     struct timeval tp;
-    gettimeofday(&tp, NULL);
-    Solver::solve(testS);
-    std::pair<Sudoku<3>, bool> result = Solver::solve(testS);
-    if (result.second){
+    gettimeofday(&tp, 0);
+    Solver::solve(hardTest);
+    std::pair < Sudoku<3>, bool> result = Solver::solve(hardTest);
+    if (result.second) {
         std::cout << result.first;
     } else {
         std::cout << "Puzzle has no solutions \n";
     }
     long int start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-    for (int i = 0; i < 1000; i++){
+    for (int i = 0; i < 1000; i++) {
         Sudoku<3> testS({
-        9,0,6,0,7,0,4,0,3,
-        0,0,0,4,0,0,2,0,0,
-        0,7,0,0,2,3,0,1,0,
-        5,0,0,0,0,0,1,0,0,
-        0,4,0,2,0,8,0,6,0,
-        0,0,3,0,0,0,0,0,5,
-        0,3,0,7,0,0,0,5,0,
-        0,0,7,0,0,5,0,0,0,
-        4,0,5,0,1,0,7,0,8
-    });
+            9, 0, 6, 0, 7, 0, 4, 0, 3,
+            0, 0, 0, 4, 0, 0, 2, 0, 0,
+            0, 7, 0, 0, 2, 3, 0, 1, 0,
+            5, 0, 0, 0, 0, 0, 1, 0, 0,
+            0, 4, 0, 2, 0, 8, 0, 6, 0,
+            0, 0, 3, 0, 0, 0, 0, 0, 5,
+            0, 3, 0, 7, 0, 0, 0, 5, 0,
+            0, 0, 7, 0, 0, 5, 0, 0, 0,
+            4, 0, 5, 0, 1, 0, 7, 0, 8
+        });
         result = Solver::solve(testS);
     }
-    gettimeofday(&tp, NULL);
+    gettimeofday(&tp, 0);
     long int end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
     std::cout << "Time taken for 1000 puzzles: " << end - start << " milliseconds\n";
 
     start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-    for (int i = 1; i < 1000; i++){
+    for (int i = 1; i < 1000; i++) {
         Sudoku<3> testS({
-        9,0,6,0,7,0,4,0,3,
-        0,0,0,4,0,0,2,0,0,
-        0,7,0,0,2,3,0,1,0,
-        5,0,0,0,0,0,1,0,0,
-        0,4,0,2,0,8,0,6,0,
-        0,0,3,0,0,0,0,0,5,
-        0,3,0,7,0,0,0,5,0,
-        0,0,7,0,0,5,0,0,0,
-        4,0,5,0,1,0,7,0,8
-    });
+            9, 0, 6, 0, 7, 0, 4, 0, 3,
+            0, 0, 0, 4, 0, 0, 2, 0, 0,
+            0, 7, 0, 0, 2, 3, 0, 1, 0,
+            5, 0, 0, 0, 0, 0, 1, 0, 0,
+            0, 4, 0, 2, 0, 8, 0, 6, 0,
+            0, 0, 3, 0, 0, 0, 0, 0, 5,
+            0, 3, 0, 7, 0, 0, 0, 5, 0,
+            0, 0, 7, 0, 0, 5, 0, 0, 0,
+            4, 0, 5, 0, 1, 0, 7, 0, 8
+        });
     }
     gettimeofday(&tp, NULL);
     end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
     std::cout << "Subtract time taken for 1000 declarations: " << end - start << " milliseconds\n";
-//    std::cout << "Original was: \n" << testS << '\n';
-    if (result.second){
+    //    std::cout << "Original was: \n" << testS << '\n';
+    if (result.second) {
         std::cout << result.first;
     } else {
         std::cout << "Puzzle has no solutions \n";
     }
-    
-    Sudoku<3> test({
-        9,0,6,0,7,0,4,0,3,
-        0,0,0,4,0,0,2,0,0,
-        0,7,0,0,2,3,0,1,0,
-        5,0,0,0,0,0,1,0,0,
-        0,4,0,2,0,8,0,6,0,
-        0,0,3,0,0,0,0,0,5,
-        0,3,0,7,0,0,0,5,0,
-        0,0,7,0,0,5,0,0,0,
-        4,0,5,0,1,0,7,0,8
+
+    Sudoku<3> exhaustiveTest({
+        9, 0, 6, 0, 7, 0, 4, 0, 3,
+        0, 0, 0, 4, 0, 0, 2, 0, 0,
+        0, 7, 0, 0, 2, 3, 0, 1, 0,
+        5, 0, 0, 0, 0, 0, 1, 0, 0,
+        0, 4, 0, 2, 0, 8, 0, 6, 0,
+        0, 0, 3, 0, 0, 0, 0, 0, 5,
+        0, 3, 0, 7, 0, 0, 0, 5, 0,
+        0, 0, 7, 0, 0, 5, 0, 0, 0,
+        4, 0, 5, 0, 1, 0, 7, 0, 8
     });
-    std::vector<Sudoku<3>> solutions;
+    std::vector<Sudoku < 3 >> solutions;
     std::cout << "Exhaustive solving: \n";
-    std::cout << test;
-    gettimeofday(&tp, NULL);
+    std::cout << exhaustiveTest;
+    gettimeofday(&tp, 0);
     start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-    Solver::exhaustiveSolve(test, solutions);
-    gettimeofday(&tp, NULL);
+    Solver::exhaustiveSolve(exhaustiveTest, solutions);
+    gettimeofday(&tp, 0);
     end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-    std::cout << "Solutions: " << solutions.size() << ":" <<std::endl;
-    for (auto& sol: solutions){
+    std::cout << "Solutions: " << solutions.size() << ":" << std::endl;
+    for (auto& sol : solutions) {
         std::cout << sol;
     }
     std::cout << "Time taken for exhaustive solutions: " << end - start << " milliseconds\n";
-
-    
-    
-//        std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> testSud;
-//        for (int i = 0; i < MAGNITUDE_SQR*MAGNITUDE_SQR; i++){
-//            testSud[i] = rand() % 37;
-//        }
-//        Sudoku testS(testSud);
-//    std::cout << testS;
+    exhaustiveTest = Sudoku<3>({
+        0, 8, 0, 0, 0, 9, 7, 4, 3,
+        0, 5, 0, 0, 0, 8, 0, 1, 0,
+        0, 1, 0, 0, 0, 0, 0, 0, 0,
+        8, 0, 0, 0, 0, 5, 0, 0, 0,
+        0, 0, 0, 8, 0, 4, 0, 0, 0,
+        0, 0, 0, 3, 0, 0, 0, 0, 6,
+        0, 0, 0, 0, 0, 0, 0, 7, 0,
+        0, 3, 0, 5, 0, 0, 0, 8, 0,
+        9, 7, 2, 4, 0, 0, 0, 5, 0
+    });
+    solutions.clear();
+    std::cout << "Exhaustive solving: \n";
+    std::cout << exhaustiveTest;
+    gettimeofday(&tp, 0);
+    start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+    Solver::exhaustiveSolve(exhaustiveTest, solutions);
+    gettimeofday(&tp, 0);
+    end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+    std::cout << "Solutions: " << solutions.size() << ":" << std::endl;
+    for (auto& sol : solutions) {
+        std::cout << sol;
+    }
+    std::cout << "Time taken for exhaustive solutions: " << end - start << " milliseconds\n";
 }
 
 //Sudoku tests:
