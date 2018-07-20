@@ -34,10 +34,9 @@ std::string SudokuI::emptyPositionsPossibilities() const {
 
 bool operator<(SudokuI const& sud1, SudokuI const& sud2){
     if (sud1.allPossibles.size() == 0 || sud2.allPossibles.size() == 0) // no possibilities in lowest
-        return sud1.allPossibles.size() < sud2.allPossibles.size();
-    int size1 = (int) sud1.allPossibles.back().possibles.size();
-    int size2 = (int) sud2.allPossibles.back().possibles.size();
-    return size1 < size2;
+        return sud1.allPossibles.size() < sud2.allPossibles.size(); 
+    return sud1.allPossibles.back().possibles.size() < 
+           sud2.allPossibles.back().possibles.size();
 }
 
 std::ostream& operator<< (std::ostream& o, const SudokuI& sud){
