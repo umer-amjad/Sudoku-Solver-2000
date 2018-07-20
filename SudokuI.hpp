@@ -16,24 +16,23 @@
 #include <set>
 #include <utility>
 
-typedef std::pair<int, std::vector<int>> PossVect;
-
-struct PossVectCompare {
-    inline bool operator()(const PossVect &a, const PossVect &b);
+struct PossibleAtIndex {
+    int index;
+    std::vector<int> possibles;
 };
 
-bool PossVectCompare::operator()(const PossVect &a, const PossVect &b) {
-    if (a.second.size() == b.second.size())
-        return a.first > b.first;
-    return a.second.size() > b.second.size();
+bool operator<(const PossibleAtIndex &a, const PossibleAtIndex &b) {
+    if (a.possibles.size() == b.possibles.size())
+        return a.index > b.index;
+    return a.possibles.size() > b.possibles.size();
 }
 
 class SudokuI {
 protected:
-    std::vector<PossVect> allPossVect; //set of possibility vectors
+    std::vector<PossibleAtIndex> allPossibles; //set of possibility vectors
 public:
     SudokuI() {};
-    SudokuI(std::vector<PossVect> newPossVect): allPossVect(newPossVect) {}; //Populating possibilities vector
+    SudokuI(std::vector<PossibleAtIndex> newPossVect): allPossibles(newPossVect) {}; //Populating possibilities vector
     
     bool isComplete() const;
     bool isDivergent() const;

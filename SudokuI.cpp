@@ -5,26 +5,26 @@
 #include "SudokuI.hpp"
 
 bool SudokuI::isComplete() const {
-    return (allPossVect.size() == 0);
+    return (allPossibles.size() == 0);
 }
 
 bool SudokuI::isDivergent() const {
-    if (allPossVect.back().second.size() == 0){
+    if (allPossibles.back().possibles.size() == 0){
         return true;
     }
-    return allPossVect.back().second.size() > 1;
+    return allPossibles.back().possibles.size() > 1;
 }
 
 bool SudokuI::invalidPuzzle() const {
-    return allPossVect.back().second.size() == 0;
+    return allPossibles.back().possibles.size() == 0;
 }
 
 std::string SudokuI::emptyPositionsPossibilities() const {
     std::stringstream result;
     //std::cout << "Set size is " << allPossVect.size() << '\n'; debug
-    for (auto possVect : allPossVect){
-        result << possVect.first << ": {";
-        for (int poss : possVect.second){
+    for (auto indPoss : allPossibles){
+        result << indPoss.index << ": {";
+        for (int poss : indPoss.possibles){
             result << " " << poss << ",";
         }
         result << "}\n";
@@ -33,10 +33,10 @@ std::string SudokuI::emptyPositionsPossibilities() const {
 }
 
 bool operator<(SudokuI const& sud1, SudokuI const& sud2){
-    if (sud1.allPossVect.size() == 0 || sud2.allPossVect.size() == 0) // no possibilities in lowest
-        return sud1.allPossVect.size() < sud2.allPossVect.size();
-    int size1 = (int) sud1.allPossVect.back().second.size();
-    int size2 = (int) sud2.allPossVect.back().second.size();
+    if (sud1.allPossibles.size() == 0 || sud2.allPossibles.size() == 0) // no possibilities in lowest
+        return sud1.allPossibles.size() < sud2.allPossibles.size();
+    int size1 = (int) sud1.allPossibles.back().possibles.size();
+    int size2 = (int) sud2.allPossibles.back().possibles.size();
     return size1 < size2;
 }
 

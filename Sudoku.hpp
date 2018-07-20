@@ -109,12 +109,12 @@ class Sudoku : public SudokuI {
         return result;
     }
 
-    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossVect> newPossVect) : SudokuI(newPossVect), entry(newEntryList) {
+    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossibleAtIndex> newPossVect) : SudokuI(newPossVect), entry(newEntryList) {
         int min_possibles_size = MAGNITUDE_SQR;
-        auto min_iterator = allPossVect.begin();
-        for (auto indPoss = allPossVect.begin(); indPoss != allPossVect.end(); indPoss++) {
-            int index = indPoss->first;
-            std::vector<int>& possibles = indPoss->second;
+        auto min_iterator = allPossibles.begin();
+        for (auto indPoss = allPossibles.begin(); indPoss != allPossibles.end(); indPoss++) {
+            int index = indPoss->index;
+            std::vector<int>& possibles = indPoss->possibles;
             auto rwFilled = rowFilled(rowNum(index));
             auto clFilled = colFilled(colNum(index));
             auto bxFilled = boxFilled(boxNum(index));
@@ -130,7 +130,7 @@ class Sudoku : public SudokuI {
                 min_possibles_size = (int) possibles.size();
             }
         }
-        std::sort(min_iterator, allPossVect.end(), PossVectCompare());
+        std::sort(min_iterator, allPossibles.end(), PossVectCompare());
     }
 
     std::vector<int> findPossibles(int pos) const {
@@ -156,26 +156,26 @@ public:
         int min_possibles_size = MAGNITUDE_SQR;
         for (auto e : entry) {
             if (e == 0) {
-                allPossVect.emplace_back(std::make_pair(i, findPossibles(i)));
-                if (allPossVect.back().second.size() < min_possibles_size) {
-                    min_index = allPossVect.size() - 1;
-                    min_possibles_size = (int) allPossVect.back().second.size();
+                allPossibles.emplace_back(std::make_pair(i, findPossibles(i)));
+                if (allPossibles.back().second.size() < min_possibles_size) {
+                    min_index = allPossibles.size() - 1;
+                    min_possibles_size = (int) allPossibles.back().second.size();
                 }
             }
             i++;
         }
-        std::sort(allPossVect.begin() + min_index, allPossVect.end(), PossVectCompare());
+        std::sort(allPossibles.begin() + min_index, allPossibles.end(), PossVectCompare());
     }
 
     std::list<Sudoku> neighbours() {
-        auto smallestPossList = allPossVect.back(); // take out first element
-        allPossVect.pop_back();
+        auto smallestPossList = allPossibles.back(); // take out first element
+        allPossibles.pop_back();
         int numNbrs = (int) smallestPossList.second.size();
         std::list<Sudoku> nbrs;
         for (int i = 0; i < numNbrs; i++) {
             std::array<int, MAGNITUDE_SQR * MAGNITUDE_SQR> newEntry = entry;
             newEntry[smallestPossList.first] = smallestPossList.second[i];
-            nbrs.push_back(Sudoku(newEntry, allPossVect));
+            nbrs.push_back(Sudoku(newEntry, allPossibles));
         }
         nbrs.sort();
         return nbrs;
@@ -185,8 +185,8 @@ public:
         //keep track of which numbers have been used ("visited"), in case the puzzle has reached a point
         //where the only possibles in the same row/box/col are overlapping (contradictorily).
         bool visited[MAGNITUDE_SQR + 1] = {false}; //starts at 0, but uses values from 1
-        auto possVec = allPossVect.rbegin();
-        for (; possVec != allPossVect.rend(); ++possVec) {
+        auto possVec = allPossibles.rbegin();
+        for (; possVec != allPossibles.rend(); ++possVec) {
             if (possVec->second.size() != 1)
                 break;
             int val = possVec->second[0];
@@ -195,9 +195,9 @@ public:
             entry[possVec->first] = val; //size = 1
             visited[val] = true;
         }
-        allPossVect.erase(possVec.base(), allPossVect.end());
+        allPossibles.erase(possVec.base(), allPossibles.end());
         //std::cout << "After filling pos:\n" << EmptyPositionsPossibilities();
-        return Sudoku(entry, allPossVect);
+        return Sudoku(entry, allPossibles);
     }
 
     virtual std::string toString() const override {
