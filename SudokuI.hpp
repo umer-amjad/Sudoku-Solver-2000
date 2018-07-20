@@ -10,7 +10,6 @@
 #include <cmath>
 #include <array>
 #include <vector>
-#include <deque>
 #include <ostream>
 #include <string>
 #include <sstream>
@@ -30,8 +29,6 @@ public:
     bool isComplete() const;
     bool isDivergent() const;
     bool invalidPuzzle() const; // invalid if no numbers possible at some position
-    virtual std::deque<std::shared_ptr<SudokuI>> neighbours() = 0;
-    virtual std::shared_ptr<SudokuI> fillPossibles() = 0;
     
     std::string emptyPositionsPossibilities() const;
     

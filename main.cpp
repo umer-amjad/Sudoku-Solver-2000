@@ -6,11 +6,8 @@
 #include "SudokuI.hpp"
 #include "SudokuSolver.hpp"
 
-
-
-int main() {
-    constexpr int MAGNITUDE_SQR = 9;
-    std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> testSud{
+int main(){
+    Sudoku<3> testS({
         9,0,6,0,7,0,4,0,3,
         0,0,0,4,0,0,2,0,0,
         0,7,0,0,2,3,0,1,0,
@@ -20,21 +17,30 @@ int main() {
         0,3,0,7,0,0,0,5,0,
         0,0,7,0,0,5,0,0,0,
         4,0,5,0,1,0,7,0,8
-    };
-    std::shared_ptr<SudokuI> testS;
-    testS.reset(new Sudoku<3>(testSud));
-    std::cout << *testS;
+    });
+    std::cout << testS;
     struct timeval tp;
     gettimeofday(&tp, NULL);
-    auto result = Solver::solve(testS);
+    Solver::solve(testS);
+    std::pair<Sudoku<3>, bool> result = Solver::solve(testS);
     if (result.second){
-        std::cout << *(result.first);
+        std::cout << result.first;
     } else {
-        std::cout << "Puzzle has no solutions\n";
+        std::cout << "Puzzle has no solutions \n";
     }
     long int start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
     for (int i = 0; i < 1000; i++){
-        testS.reset(new Sudoku<3>(testSud));
+        Sudoku<3> testS({
+        9,0,6,0,7,0,4,0,3,
+        0,0,0,4,0,0,2,0,0,
+        0,7,0,0,2,3,0,1,0,
+        5,0,0,0,0,0,1,0,0,
+        0,4,0,2,0,8,0,6,0,
+        0,0,3,0,0,0,0,0,5,
+        0,3,0,7,0,0,0,5,0,
+        0,0,7,0,0,5,0,0,0,
+        4,0,5,0,1,0,7,0,8
+    });
         result = Solver::solve(testS);
     }
     gettimeofday(&tp, NULL);
@@ -43,19 +49,7 @@ int main() {
 
     start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
     for (int i = 1; i < 1000; i++){
-        testS.reset(new Sudoku<3>(testSud));
-    }
-    gettimeofday(&tp, NULL);
-    end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-    std::cout << "Subtract time taken for 1000 declarations: " << end - start << " milliseconds\n";
-//    std::cout << "Original was: \n" << testS << '\n';
-    if (result.second){
-        std::cout << *(result.first);
-    } else {
-        std::cout << "Puzzle has no solutions \n";
-    }
-    
-    std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> exhaustiveTest{
+        Sudoku<3> testS({
         9,0,6,0,7,0,4,0,3,
         0,0,0,4,0,0,2,0,0,
         0,7,0,0,2,3,0,1,0,
@@ -65,32 +59,40 @@ int main() {
         0,3,0,7,0,0,0,5,0,
         0,0,7,0,0,5,0,0,0,
         4,0,5,0,1,0,7,0,8
-    };
-    std::shared_ptr<SudokuI> exhaustTest;
-    exhaustTest.reset(new Sudoku<3>(exhaustiveTest));
-    std::vector<std::shared_ptr<SudokuI>> solutions;
+    });
+    }
+    gettimeofday(&tp, NULL);
+    end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+    std::cout << "Subtract time taken for 1000 declarations: " << end - start << " milliseconds\n";
+//    std::cout << "Original was: \n" << testS << '\n';
+    if (result.second){
+        std::cout << result.first;
+    } else {
+        std::cout << "Puzzle has no solutions \n";
+    }
+    
+    Sudoku<3> test({
+        9,0,6,0,7,0,4,0,3,
+        0,0,0,4,0,0,2,0,0,
+        0,7,0,0,2,3,0,1,0,
+        5,0,0,0,0,0,1,0,0,
+        0,4,0,2,0,8,0,6,0,
+        0,0,3,0,0,0,0,0,5,
+        0,3,0,7,0,0,0,5,0,
+        0,0,7,0,0,5,0,0,0,
+        4,0,5,0,1,0,7,0,8
+    });
+    std::vector<Sudoku<3>> solutions;
     std::cout << "Exhaustive solving: \n";
-    std::cout << *exhaustTest;
+    std::cout << test;
     gettimeofday(&tp, NULL);
     start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-    Solver::exhaustiveSolve(exhaustTest, solutions);
+    Solver::exhaustiveSolve(test, solutions);
     gettimeofday(&tp, NULL);
     end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
     std::cout << "Solutions: " << solutions.size() << ":" <<std::endl;
-//    auto end_iter = std::unique(solutions.begin(), solutions.end(),
-//                                [](const Sudoku& s1, const Sudoku& s2) -> bool {
-//                                    for (int i = 0; i < MAGNITUDE_SQR * MAGNITUDE_SQR; i++){
-//                                        if (s1[i] != s2[i]){
-//                                            return false;
-//                                        }
-//                                    }
-//                                    return true;
-//                                }
-//                                );
-//    std::vector<Sudoku> unique_solutions(solutions.begin(), end_iter);
-//    std::cout << "Unique solutions???: " << solutions.size() << ":" <<std::endl;
     for (auto& sol: solutions){
-        std::cout << *sol;
+        std::cout << sol;
     }
     std::cout << "Time taken for exhaustive solutions: " << end - start << " milliseconds\n";
 
