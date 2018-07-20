@@ -5,10 +5,7 @@
 #ifndef SudokuSolver_hpp
 #define SudokuSolver_hpp
 
-#include <iostream>
-
 #include "Sudoku.hpp"
-#include <memory>
 
 // given a sudoku puzzle, if a solution is found, returns {Solution, true}
 // if no solution is found, second component is false

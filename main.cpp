@@ -1,4 +1,6 @@
 #include <sys/time.h>
+#include <iostream>
+
 #include "SudokuSolver.hpp"
 
 int main() {

@@ -10,10 +10,10 @@
 #include <iomanip>
 #include <cmath>
 
-#include "SudokuI.hpp"
+#include "AbstractSudoku.hpp"
 
 template<int MAGNITUDE>
-class Sudoku : public SudokuI {
+class Sudoku : public AbstractSudoku {
     static constexpr int MAGNITUDE_SQR = MAGNITUDE * MAGNITUDE;
 
     static const std::vector<int> allPoss;
@@ -111,7 +111,7 @@ class Sudoku : public SudokuI {
         return result;
     }
 
-    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossibleAtIndex> newPossVect) : SudokuI(newPossVect), entry(newEntryList) {
+    Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> newEntryList, std::vector<PossibleAtIndex> newPossVect) : AbstractSudoku(newPossVect), entry(newEntryList) {
         int min_possibles_size = MAGNITUDE_SQR;
         auto min_iterator = allPossibles.begin();
         for (auto indPoss = allPossibles.begin(); indPoss != allPossibles.end(); indPoss++) {
@@ -132,7 +132,7 @@ class Sudoku : public SudokuI {
                 min_possibles_size = (int) possibles.size();
             }
         }
-        std::sort(min_iterator, allPossibles.end(), PossVectCompare());
+        std::sort(min_iterator, allPossibles.end());
     }
 
     std::vector<int> findPossibles(int pos) const {
@@ -151,32 +151,32 @@ class Sudoku : public SudokuI {
     }
 
 public:
-    Sudoku(): SudokuI() {};
+    Sudoku(): AbstractSudoku() {};
     Sudoku(std::array<int, MAGNITUDE_SQR*MAGNITUDE_SQR> entryList) : entry(entryList) {
         int i = 0;
         int min_index = 0;
         int min_possibles_size = MAGNITUDE_SQR;
         for (auto e : entry) {
             if (e == 0) {
-                allPossibles.emplace_back(std::make_pair(i, findPossibles(i)));
-                if (allPossibles.back().second.size() < min_possibles_size) {
+                allPossibles.emplace_back(PossibleAtIndex{i, findPossibles(i)});
+                if (allPossibles.back().possibles.size() < min_possibles_size) {
                     min_index = allPossibles.size() - 1;
-                    min_possibles_size = (int) allPossibles.back().second.size();
+                    min_possibles_size = (int) allPossibles.back().possibles.size();
                 }
             }
             i++;
         }
-        std::sort(allPossibles.begin() + min_index, allPossibles.end(), PossVectCompare());
+        std::sort(allPossibles.begin() + min_index, allPossibles.end());
     }
 
     std::list<Sudoku> neighbours() {
         auto smallestPossList = allPossibles.back(); // take out first element
         allPossibles.pop_back();
-        int numNbrs = (int) smallestPossList.second.size();
+        int numNbrs = (int) smallestPossList.possibles.size();
         std::list<Sudoku> nbrs;
         for (int i = 0; i < numNbrs; i++) {
             std::array<int, MAGNITUDE_SQR * MAGNITUDE_SQR> newEntry = entry;
-            newEntry[smallestPossList.first] = smallestPossList.second[i];
+            newEntry[smallestPossList.index] = smallestPossList.possibles[i];
             nbrs.push_back(Sudoku(newEntry, allPossibles));
         }
         nbrs.sort();
@@ -189,12 +189,12 @@ public:
         bool visited[MAGNITUDE_SQR + 1] = {false}; //starts at 0, but uses values from 1
         auto possVec = allPossibles.rbegin();
         for (; possVec != allPossibles.rend(); ++possVec) {
-            if (possVec->second.size() != 1)
+            if (possVec->possibles.size() != 1)
                 break;
-            int val = possVec->second[0];
+            int val = possVec->possibles[0];
             if (visited[val])
                 break;
-            entry[possVec->first] = val; //size = 1
+            entry[possVec->index] = val; //size = 1
             visited[val] = true;
         }
         allPossibles.erase(possVec.base(), allPossibles.end());
