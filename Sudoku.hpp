@@ -1,4 +1,4 @@
-//  SudokuN.hpp
+//  Sudoku.hpp
 
 #ifndef SUDOKUN_HPP
 #define SUDOKUN_HPP
@@ -6,19 +6,9 @@
 #include <sstream>
 #include <memory>
 #include <list>
+#include <algorithm>
 
 #include "SudokuI.hpp"
-
-struct PossVectCompare {
-    inline bool operator()(const PossVect &a, const PossVect &b);
-};
-
-bool PossVectCompare::operator()(const PossVect &a, const PossVect &b) {
-    if (a.second.size() == b.second.size())
-        return a.first > b.first;
-    return a.second.size() > b.second.size();
-}
-
 
 template<int MAGNITUDE>
 class Sudoku : public SudokuI {

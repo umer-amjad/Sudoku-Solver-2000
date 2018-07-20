@@ -1,9 +1,4 @@
-#include <iostream>
-#include <vector>
 #include <sys/time.h>
-#include <algorithm>
-#include "Sudoku.hpp" 
-#include "SudokuI.hpp"
 #include "SudokuSolver.hpp"
 
 int main() {
@@ -21,8 +16,7 @@ int main() {
     std::cout << hardTest;
     struct timeval tp;
     gettimeofday(&tp, 0);
-    Solver::solve(hardTest);
-    std::pair < Sudoku<3>, bool> result = Solver::solve(hardTest);
+    std::pair < Sudoku<3>, bool> result = solve(hardTest);
     if (result.second) {
         std::cout << result.first;
     } else {
@@ -41,7 +35,7 @@ int main() {
             0, 0, 7, 0, 0, 5, 0, 0, 0,
             4, 0, 5, 0, 1, 0, 7, 0, 8
         });
-        result = Solver::solve(testS);
+        result = solve(testS);
     }
     gettimeofday(&tp, 0);
     long int end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
@@ -87,7 +81,7 @@ int main() {
     std::cout << exhaustiveTest;
     gettimeofday(&tp, 0);
     start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-    Solver::exhaustiveSolve(exhaustiveTest, solutions);
+    exhaustiveSolve(exhaustiveTest, solutions);
     gettimeofday(&tp, 0);
     end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
     std::cout << "Solutions: " << solutions.size() << ":" << std::endl;
@@ -111,7 +105,7 @@ int main() {
     std::cout << exhaustiveTest;
     gettimeofday(&tp, 0);
     start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-    Solver::exhaustiveSolve(exhaustiveTest, solutions);
+    exhaustiveSolve(exhaustiveTest, solutions);
     gettimeofday(&tp, 0);
     end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
     std::cout << "Solutions: " << solutions.size() << ":" << std::endl;
