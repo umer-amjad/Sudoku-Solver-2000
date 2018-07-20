@@ -205,9 +205,8 @@ public:
     virtual std::string toString() const override {
         std::ostringstream o;
         int numDigits = log10(MAGNITUDE_SQR) + 1;
-        std::string emptyPos;
-        for (int i = 0; i < numDigits; i++)
-            emptyPos += ".";
+        std::string emptyPos(numDigits, '.');
+        // all row entries + box breaks + spaces between entries
         int lenLine = numDigits * MAGNITUDE_SQR + MAGNITUDE + 1 + MAGNITUDE * (MAGNITUDE + 1);
         for (int r = 0; r < MAGNITUDE_SQR; r++) {
             if (r % MAGNITUDE == 0) {
