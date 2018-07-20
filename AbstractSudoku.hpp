@@ -1,9 +1,9 @@
 // 
-// SudokuI.hpp - Sudoku Interface class 
+// AbstrctSudoku.hpp 
 //
 
-#ifndef SUDOKUI_HPP
-#define SUDOKUI_HPP
+#ifndef ABSTRACTSUDOKU_HPP
+#define ABSTRACTSUDOKU_HPP
 
 #include <iosfwd>
 #include <vector>
@@ -41,5 +41,5 @@ public:
 
 
 
-#endif /* SUDOKUI_HPP */
+#endif /* ABSTRACTSUDOKU_HPP */
 

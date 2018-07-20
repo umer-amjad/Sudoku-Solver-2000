@@ -1,5 +1,5 @@
 //
-//  SudokuI.cpp
+//  AbstractSudoku.cpp
 //
 
 #include "AbstractSudoku.hpp"

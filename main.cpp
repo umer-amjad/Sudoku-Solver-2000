@@ -66,7 +66,49 @@ int main() {
     } else {
         std::cout << "Puzzle has no solutions \n";
     }
-
+    Sudoku<4> bigTest({
+        1, 0, 0, 2, 3, 4, 0, 0, 12, 0, 6, 0, 0, 0, 7, 0,
+        0, 0, 8, 0, 0, 0, 7, 0, 0, 3, 0, 0, 9, 10, 6, 11,
+        0, 12, 0, 0, 10, 0, 0, 1, 0, 13, 0, 11, 0, 0, 14, 0,
+        3, 0, 0, 15, 2, 0, 0, 14, 0, 0, 0, 9, 0, 0, 12, 0,
+        13, 0, 0, 0, 8, 0, 0, 10, 0, 12, 2, 0, 1, 15, 0, 0,
+        0, 11, 7, 6, 0, 0, 0, 16, 0, 0, 0, 15, 0, 0, 5, 13,
+        0, 0, 0, 10, 0, 5, 15, 0, 0, 4, 0, 8, 0, 0, 11, 0,
+        16, 0, 0, 5, 9, 12, 0, 0, 1, 0, 0, 0, 0, 0, 8, 0,
+        0, 2, 0, 0, 0, 0, 0, 13, 0, 0, 12, 5, 8, 0, 0, 3,
+        0, 13, 0, 0, 15, 0, 3, 0, 0, 14, 8, 0, 16, 0, 0, 0,
+        5, 8, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 13, 9, 15, 0,
+        0, 0, 12, 4, 0, 6, 16, 0, 13, 0, 0, 7, 0, 0, 0, 5,
+        0, 3, 0, 0, 12, 0, 0, 0, 6, 0, 0, 4, 11, 0, 0, 16,
+        0, 7, 0, 0, 16, 0, 5, 0, 14, 0, 0, 1, 0, 0, 2, 0,
+        11, 1, 15, 9, 0, 0, 13, 0, 0, 2, 0, 0, 0, 14, 0, 0,
+        0, 14, 0, 0, 0, 11, 0, 2, 0, 0, 13, 3, 5, 0, 0, 12
+    });
+    std::cout << "16 by 16 test: \n";
+    std::cout << bigTest;
+    auto bigResult = solve(bigTest);
+    if (bigResult.second) {
+        std::cout << bigResult.first;
+    } else {
+        std::cout << "Puzzle has no solutions.\n";
+    }
+    
+    Sudoku<2> smallTest({
+        0, 1, 2, 3,
+        2, 0, 0, 1,
+        3, 0, 1, 0,
+        0, 0, 0, 0
+    });
+    
+    std::cout << "4 by 4 test: \n";
+    std::cout << smallTest;
+    auto smallResult = solve(smallTest);
+    if (smallResult.second) {
+        std::cout << smallResult.first;
+    } else {
+        std::cout << "Puzzle has no solutions.\n";
+    }
+    
     Sudoku<3> exhaustiveTest({
         9, 0, 6, 0, 7, 0, 4, 0, 3,
         0, 0, 0, 4, 0, 0, 2, 0, 0,
@@ -115,6 +157,27 @@ int main() {
         std::cout << sol;
     }
     std::cout << "Time taken for exhaustive solutions: " << end - start << " milliseconds\n";
+    
+    std::cout << "Exhausting all possible 4 by 4 Sudokus:" << std::endl;
+    smallTest = Sudoku<2> ({
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    });
+    std::cout << smallTest;
+    gettimeofday(&tp, 0);
+    start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+    std::vector<Sudoku<2>> allSmalls;
+    exhaustiveSolve(smallTest, allSmalls);
+    gettimeofday(&tp, 0);
+    end = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+    std::cout << "Solutions: " << allSmalls.size() << ":" << std::endl;
+    for (auto& sol : allSmalls) {
+        std::cout << sol;
+    }
+    std::cout << "Time taken for exhaustive solutions: " << end - start << " milliseconds\n";
+    
 }
 
 //Sudoku tests:

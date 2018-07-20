@@ -5,6 +5,8 @@
 #ifndef SudokuSolver_hpp
 #define SudokuSolver_hpp
 
+#include <utility>
+
 #include "Sudoku.hpp"
 
 // given a sudoku puzzle, if a solution is found, returns {Solution, true}
