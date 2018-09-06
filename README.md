@@ -3,21 +3,21 @@
 A sudoku solver written in C++, based on the algorithm used in my Sudoku Solver made in Racket, but with improvements making it up to 1000 times faster. Additionally, it can solve any n^2 by n^2 Sudoku puzzle.
 
 ### How To Use ###
-The class template `Sudoku<int n>` is provided to represent an n^2 by n^2 puzzle. It has a constructor which takes as an input an array of size n^2 * n^2.
+The class template `Sudoku<int MAGNITUDE>` is provided to represent an MAGNITUDE<sup>2</sup> by MAGNITUDE<sup>2</sup> puzzle. It has a constructor which takes as an input an array of size MAGNITUDE<sup>2</sup> * MAGNITUDE<sup>2</sup>.
 
-~~Once this field is set, you can enter in your sudoku as an array in the first line of main.cpp. Running the program will then solve this puzzle, as well as display the time taken to solve 1000 identical puzzles to the one entered (but re-running the algorithm every time). If one just wants the solution, this timer can be commented out or removed. ~~
+Then, the function `solve` can be called. If `sudoku` is the name of a variable of type `Sudoku<n>` for `n` some positive integer, then it can be solved by calling `solve(sudoku)`. This outputs a variable of type `pair<Sudoku, bool>`. The first output in the pair of outputs is the solution if one was found. The second output in the pair of outputs is true if a solution was found, and false if the puzzle does not have any solutions. 
 
-The first output in the pair of outputs <bool, Sudoku> is true if a solution was found, and false if the puzzle does not have any solutions. If the input given is an ill-formed puzzle which allows for multiple solution, only one solution is found. The insertion operator << has been overloaded to display a Sudoku puzzle. The output adjusts itself if the puzzle's magnitude is large enough that more than one digit is required per number. 
+If the input given is an ill-formed puzzle which allows for multiple solution, only one solution is found. However, in this case, if one wants to find all possible solutions, one can use the `exhaustiveSolve` function, which takes as its first argument the Sudoku puzzle, and as a second argument (by reference) an empty vector of Sudoku puzzles. This second argument will be populated with all solutions find while the algorithm runs.
 
-Note that the project was written using C++14, but the features used should allow compiling in older versions.
+The insertion operator `<<` has been overloaded to display a Sudoku puzzle. The output adjusts itself appropriately as needed depending on the size of the puzzle.
+
+The project was written using C++14 and can be compuled accordingly. 
 
 ### Future Plans ###
 
 Short term plans include:
 - Increase algorithmic efficiency (this will be implemented in the "createNeighbour" function) (IN PROGRESS)
-- Create a template out of the Sudoku class (with the template parameter being the size (or "MAGNITUDE") of the Sudoku) so that sudokus of different magnitudes can be solved without re-compiling the program
 - More user-friendly command-line interface, to input puzzles in the command line instead of in the code itself
-- ~~Finding the set of all possible solutions for ill-formed puzzles, as well as the number of all possible solutions~~
 
 Long term plans include:
 - Using an image detection library to solve Sudoku puzzles input as images
