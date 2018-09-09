@@ -5,13 +5,13 @@ A sudoku solver written in C++, based on the algorithm used in my Sudoku Solver 
 ### How To Use ###
 The class template `Sudoku<int MAGNITUDE>` is provided to represent an MAGNITUDE<sup>2</sup> by MAGNITUDE<sup>2</sup> puzzle. It has a constructor which takes as an input an array of size MAGNITUDE<sup>2</sup> * MAGNITUDE<sup>2</sup>.
 
-Then, the function `solve` can be called. If `sudoku` is the name of a variable of type `Sudoku<n>` for `n` some positive integer, then it can be solved by calling `solve(sudoku)`. This outputs a variable of type `pair<Sudoku, bool>`. The first output in the pair of outputs is the solution if one was found. The second output in the pair of outputs is true if a solution was found, and false if the puzzle does not have any solutions. 
+Then, the function `solve` can be called. If `sudoku` is the name of a variable of type `Sudoku<n>` for `n` some positive integer, then it can be solved by calling `solve(sudoku)`. This outputs a variable of type `pair<Sudoku<n>, bool>`. The second output in the pair of outputs is true if a solution was found, and false if the puzzle does not have any solutions. The first output in the pair of outputs is the solution if one was found.
 
-If the input given is an ill-formed puzzle which allows for multiple solution, only one solution is found. However, in this case, if one wants to find all possible solutions, one can use the `exhaustiveSolve` function, which takes as its first argument the Sudoku puzzle, and as a second argument (by reference) an empty vector of Sudoku puzzles. This second argument will be populated with all solutions find while the algorithm runs.
+If the input given is an ill-formed puzzle which allows for multiple solutions, only one solution is found. However, in this case, if one wants to find all possible solutions, one can use the `exhaustiveSolve` function, which takes as its first argument the Sudoku puzzle, and as a second argument (by reference) an empty vector of Sudoku puzzles. This second argument will be populated with all possible solutions.
 
 The insertion operator `<<` has been overloaded to display a Sudoku puzzle. The output adjusts itself appropriately as needed depending on the size of the puzzle.
 
-The project was written using C++14 and can be compuled accordingly. 
+The project was written using C++14 and can be compiled accordingly. 
 
 ### Future Plans ###
 
